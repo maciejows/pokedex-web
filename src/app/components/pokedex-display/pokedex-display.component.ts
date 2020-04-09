@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonDataService } from '../../services/pokemon-data.service'
+import { Ability } from '../../models/Ability';
 
 @Component({
   selector: 'app-pokedex-display',
@@ -10,15 +11,8 @@ export class PokedexDisplayComponent implements OnInit {
 
   constructor(private pokemonData: PokemonDataService) { }
 
-  pokemon: any;
-
   ngOnInit(): void {
-    this.pokemonData.getPokemonData(1).subscribe(
-      (data) => this.pokemon = data
-    );
+
   }
 
-  log(): void {
-    console.log(this.pokemon);
-  }
 }
