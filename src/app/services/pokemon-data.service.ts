@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Ability } from '../models/Ability';
+import { PokemonPage } from '../models/PokemonPage';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -14,6 +15,7 @@ export class PokemonDataService {
   private apiUrl: string = "https://pokeapi.co/api/v2";
   private offset: number = 0;
   private limit: number = 50;
+
   getSinglePokemonData(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/pokemon/${id}`);
   }
@@ -24,7 +26,9 @@ export class PokemonDataService {
     );
   }
 
-  getPokemonData(): Observable<any> {
-    return this.http.get<any>(`https://pokeapi.co/api/v2/pokemon?offset=${this.offset}&limit=${this.limit}`);
+  getPokemonData(): Observable<PokemonPage> {
+    return this.http.get<PokemonPage>(`https://pokeapi.co/api/v2/pokemon?offset=${this.offset}&limit=${this.limit}`).pipe(
+      map(data => new PokemonPage(data))
+    );
   }
 }

@@ -1,2 +1,6 @@
-<p>pokemon-list works!</p>
+<ul *ngIf="singlePokemonPage">
+  <li *ngFor="let pokemon of singlePokemonPage.results">
+    {{pokemon.name}}
+  </li>
+</ul>
 <button (click)="log()"> Log </button>
