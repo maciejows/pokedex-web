@@ -1,6 +1,26 @@
+<nav>
+  <ul class="pagination pg-red">
+    <li class="page-item" (click)="previousPage()">
+      <a class="page-link" aria-label="Previous" mdbWavesEffect>
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+    <button type="button" mdbBtn color="danger" mdbWavesEffect (click)="log()">Log</button>
+    <li *ngFor="let page of pageArray" class="page-item" [class.active]="selectedPage === page" (click)="selectPage(page)"><a class="page-link" mdbWavesEffect>{{page}}</a></li>
+
+    <li class="page-item" (click)="nextPage()">
+      <a class="page-link" aria-label="Next" mdbWavesEffect>
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
 <ul *ngIf="singlePokemonPage">
   <li *ngFor="let pokemon of singlePokemonPage.results">
     {{pokemon.name}}
   </li>
 </ul>
-<button (click)="log()"> Log </button>
+

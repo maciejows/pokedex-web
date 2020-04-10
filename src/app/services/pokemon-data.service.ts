@@ -13,8 +13,19 @@ export class PokemonDataService {
   constructor(private http: HttpClient) { }
 
   private apiUrl: string = "https://pokeapi.co/api/v2";
-  private offset: number = 0;
-  private limit: number = 50;
+  private _offset: number = 0;
+  private _limit: number = 50;
+
+  get limit(): number {
+    return this._limit;
+  }
+  get offset(): number {
+    return this._offset;
+  }
+
+  set offset(value: number) {
+    this._offset = value;
+  }
 
   getSinglePokemonData(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/pokemon/${id}`);
@@ -26,9 +37,17 @@ export class PokemonDataService {
     );
   }
 
-  getPokemonData(): Observable<PokemonPage> {
-    return this.http.get<PokemonPage>(`https://pokeapi.co/api/v2/pokemon?offset=${this.offset}&limit=${this.limit}`).pipe(
+  getPage(): Observable<PokemonPage> {
+    return this.http.get<PokemonPage>(`https://pokeapi.co/api/v2/pokemon?offset=${this._offset}&limit=${this.limit}`).pipe(
       map(data => new PokemonPage(data))
     );
   }
+
+  getDataByUrl(url: string): Observable<PokemonPage> {
+    return this.http.get<PokemonPage>(url).pipe(
+      map(data => new PokemonPage(data))
+    );
+  }
+
+
 }
