@@ -12,7 +12,8 @@ export class PokemonDataService {
   constructor(private http: HttpClient) { }
 
   private apiUrl: string = "https://pokeapi.co/api/v2";
-
+  private offset: number = 0;
+  private limit: number = 50;
   getSinglePokemonData(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/pokemon/${id}`);
   }
@@ -24,6 +25,6 @@ export class PokemonDataService {
   }
 
   getPokemonData(): Observable<any> {
-    return this.http.get<any>(`https://pokeapi.co/api/v2/`);
+    return this.http.get<any>(`https://pokeapi.co/api/v2/pokemon?offset=${this.offset}&limit=${this.limit}`);
   }
 }
