@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonDataService } from '../../services/pokemon-data.service'
+import { PokemonPage } from '../../models/PokemonPage';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -8,17 +9,18 @@ import { PokemonDataService } from '../../services/pokemon-data.service'
 })
 export class PokemonListComponent implements OnInit {
 
-  pokemonList: {};
+  singlePokemonPage: PokemonPage;
 
   constructor(private dataService: PokemonDataService) { }
 
   ngOnInit(): void {
     this.dataService.getPokemonData().subscribe(
-      (data) => this.pokemonList = data
+      (data) => this.singlePokemonPage = data
     );
   }
 
   log(): void {
-    console.log(this.pokemonList);
+    console.log(this.singlePokemonPage);
+    console.log(this.singlePokemonPage instanceof PokemonPage);
   }
 }
