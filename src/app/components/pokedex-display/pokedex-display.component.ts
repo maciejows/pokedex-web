@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PokemonDataService } from '../../services/pokemon-data.service'
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import {  ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-pokedex-display',
@@ -10,20 +11,38 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PokedexDisplayComponent implements OnInit {
 
-  id: number;
+  pokemon: {name: string};
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private dataService: PokemonDataService,
     ) { }
 
   ngOnInit(): void {
-    // Preserve wrong type
-    this.id = +this.activatedRoute.snapshot.paramMap.get('id');
+    //TODO Preserve wrong param type
+
+    this.activatedRoute.url.subscribe(
+      param => {
+        let name = param[1].path
+        this.getPokemon(name);
+      }
+    );
   }
 
-  goBack(): void {
-    this.location.back();
+  getPokemon(name: string){
+    if (this.dataService.PokemonList[name]) {
+      this.pokemon = this.dataService.getSinglePokemonDataStatic(name)
+    }
+    else this.dataService.getSinglePokemonData(name).subscribe(
+      (data) => {
+        this.pokemon = data
+      }
+    );
+  }
+
+  log(){
+    this.dataService.log();
   }
 
 }
