@@ -20,7 +20,7 @@
 
 <ul *ngIf="singlePokemonPage">
   <li *ngFor="let pokemon of singlePokemonPage.results">
-    {{pokemon.name}}
+    <button type="submit" class="page-link" mdbWavesEffect [routerLink]="['/pokemon', pokemon.name]" (click)="selectPokemon(pokemon.name)">{{pokemon.name}}</button>
   </li>
 </ul>
 

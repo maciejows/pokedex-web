@@ -4,8 +4,8 @@ export class Type {
   url: string;
 
   constructor(properties: any) {
-    this.name = properties.name;
-    this.url = properties.url;
+    this.name = properties.type.name;
+    this.url = properties.type.url;
   }
 
 }

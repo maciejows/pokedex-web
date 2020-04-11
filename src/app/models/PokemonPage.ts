@@ -1,3 +1,6 @@
+// Represents single page of Pokemons
+// Pokemons displaying at single page with pagination data
+
 export class PokemonPage {
   count: string;
   next: string;
