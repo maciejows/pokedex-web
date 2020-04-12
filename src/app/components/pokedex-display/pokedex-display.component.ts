@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PokemonDataService } from '../../services/pokemon-data.service'
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import {  ChangeDetectorRef } from '@angular/core';
+import { Pokemon } from '../../models/Pokemon';
 
 @Component({
   selector: 'app-pokedex-display',
@@ -10,9 +10,8 @@ import {  ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./pokedex-display.component.scss']
 })
 export class PokedexDisplayComponent implements OnInit {
-
-  pokemon: {name: string};
-
+  pokemon: Pokemon;
+  showShiny: boolean = false;
   constructor(
     private activatedRoute: ActivatedRoute,
     private location: Location,
@@ -40,9 +39,11 @@ export class PokedexDisplayComponent implements OnInit {
       }
     );
   }
-
+  toggleShiny(): void {
+    this.showShiny = !this.showShiny;
+  }
   log(){
-    this.dataService.log();
+    console.log(this.pokemon);
   }
 
 }
