@@ -56,9 +56,15 @@ export class PokemonDataService {
     );
   }
 
-  getPage(pageNumber: number): Observable<PokemonPage> {
+  getPage(pageNumber: number, url?: string): Observable<PokemonPage> {
     console.log(`Fetching page ${pageNumber} from server`);
-    return this.http.get<PokemonPage>(`https://pokeapi.co/api/v2/pokemon?offset=${this._offset}&limit=${this.limit}`).pipe(
+    let endpoint = `${this.apiUrl}/pokemon?offset=${this._offset}&limit=${this.limit}`;
+    if(url){
+      endpoint = url;
+      console.log(`By url: ${url}`);
+    }
+
+    return this.http.get<PokemonPage>(endpoint).pipe(
       map(data => new PokemonPage(data)),
       tap( (data) => this.pokemonPages[pageNumber] = data )
     );

@@ -10,18 +10,19 @@ import { PokemonPage } from '../../models/PokemonPage';
 export class PokemonListComponent implements OnInit {
 
   singlePokemonPage: PokemonPage;
+  totalPages: number[] = [];
   pageArray: number[] = [];
   selectedPage: number = 1;
-  window: Window;
   constructor(private dataService: PokemonDataService) { }
 
   ngOnInit(): void {
+    this.fillPages(3, this.pageArray);
     this.getInitPage();
   }
 
-  fillPages(counter: number): void {
+  fillPages(counter: number, array: number[]): void {
     for (let i=1; i<= counter; i++){
-       this.pageArray.push(i);
+      array.push(i);
     }
   }
 
@@ -35,19 +36,20 @@ export class PokemonListComponent implements OnInit {
         (data) => {
           this.singlePokemonPage = data
           let pages = Math.ceil(parseInt(this.singlePokemonPage.count) / this.dataService.limit);
-          this.fillPages(pages);
+          this.fillPages(pages, this.totalPages);
+          console.log(pages);
         }
       );
     }
   }
 
   // Fetch data from server, if already fetched get static page from service
-  getData(): void {
+  getData(url?: string): void {
     if (this.dataService.pokemonPages[this.selectedPage]) {
       this.singlePokemonPage = this.dataService.getPageStatic(this.selectedPage);
     }
     else {
-      this.dataService.getPage(this.selectedPage).subscribe(
+      this.dataService.getPage(this.selectedPage, url).subscribe(
         (data) => {
           this.singlePokemonPage = data
         }
@@ -56,24 +58,39 @@ export class PokemonListComponent implements OnInit {
   }
 
   selectPage(page: number): void{
+    if(page > 1 && page < this.totalPages.length){
+      this.pageArray[0] = page-1;
+      this.pageArray[1] = page;
+      this.pageArray[2] = page+1;
+    }
     this.selectedPage = page;
     this.dataService.offset = (this.dataService.limit * (page-1));
     this.getData();
   }
 
   previousPage(): void {
-    if (this.selectedPage > 1) {
+    if (this.singlePokemonPage.previous) {
+      if(this.selectedPage > 2 && this.selectedPage < this.totalPages.length) {
+        for (let i=0; i<this.pageArray.length; i++){
+          this.pageArray[i] -=1;
+        }
+      }
       this.selectedPage--;
       this.dataService.offset -= this.dataService.limit;
-      this.getData();
+      this.getData(this.singlePokemonPage.previous);
     }
   }
 
   nextPage(): void {
-    if(this.selectedPage < this.pageArray.length) {
+    if(this.singlePokemonPage.next) {
+      if(this.selectedPage >= 2 && this.selectedPage < this.totalPages.length-1) {
+        for (let i=0; i<this.pageArray.length; i++){
+          this.pageArray[i] +=1;
+        }
+      }
       this.selectedPage++;
       this.dataService.offset += this.dataService.limit;
-      this.getData();
+      this.getData(this.singlePokemonPage.next);
     }
   }
 
@@ -82,8 +99,9 @@ export class PokemonListComponent implements OnInit {
   }
 
   log(): void {
-    console.log(this.singlePokemonPage);
-    console.log(this.pageArray);
-    console.log(this.dataService.pokemonPages);
+    console.log(this.pageArray[0]);
+    console.log(this.pageArray[1]);
+    console.log(this.pageArray[2]);
+    console.log(this.selectedPage);
   }
 }
