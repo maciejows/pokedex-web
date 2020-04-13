@@ -36,6 +36,7 @@ export class PokemonListComponent implements OnInit {
         (data) => {
           this.singlePokemonPage = data
           let pages = Math.ceil(parseInt(this.singlePokemonPage.count) / this.dataService.limit);
+          console.log(pages);
           this.fillPages(pages, this.totalPages);
           console.log(pages);
         }
