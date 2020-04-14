@@ -47,7 +47,6 @@ export class PokedexDisplayComponent implements OnInit {
 
   ngOnInit(): void {
     //TODO Preserve wrong param type
-    console.log(this.typesMap["poison"]);
     this.activatedRoute.url.subscribe(
       param => {
         let name = param[1].path
