@@ -30,12 +30,19 @@
     </div>
 
     <div class="col-11 col-md-8 mt-1 mb-3 spy2">
-      <div *ngIf="options[0].clicked" class="text-justify mt-3 pb-3">
-        <strong>Abilities:</strong> <span *ngFor="let ability of pokemon.abilities; let i = index"> <span *ngIf="i !== 0">,</span> {{ability.name | titlecase}}</span>
+      <div *ngIf="options[0].clicked && pokemon?.abilities" class="text-justify mt-3 pb-3">
+        <strong>Abilities:</strong>
+        <span *ngFor="let ability of pokemon.abilities; let i = index">
+          <span *ngIf="i !== 0">,</span> {{ability.name | titlecase}}</span>
         <br>
         <p class="mt-5"> <strong>Description:</strong> </p>
       </div>
-      <div *ngIf="options[1].clicked" class="text-justify mt-3 pb-3"> <strong> Moves </strong></div>
+      <div *ngIf="options[1].clicked" class="text-justify mt-3 pb-3">
+        <strong> Moves </strong>
+        <span *ngFor="let move of pokemon.moves;">
+          <p class="rmpm"> {{move.name}} </p>
+        </span>
+      </div>
       <div *ngIf="options[2].clicked" class="text-justify mt-3 pb-3">
         <div *ngFor="let stat of pokemon.stats | reverse"> <strong>{{stat.name | titlecase}}</strong> : {{stat.value}}</div>
       </div>

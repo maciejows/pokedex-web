@@ -4,6 +4,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 export class CharToSpacePipe implements PipeTransform {
   transform(value: string) {
-    return value.replace("-", " ");
+    if(value) return value.replace("-", " ");
   }
 }

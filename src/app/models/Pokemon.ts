@@ -22,7 +22,12 @@ export class Pokemon {
     }
 
     for(let i = 0; i < data.moves.length; i++){
-      this.moves.push(new Move(data.moves[i]));
+      for (let j=0; j< data.moves[i].version_group_details.length; j++){
+        if (data.moves[i].version_group_details[j].move_learn_method.name === "level-up") {
+          this.moves.push(new Move(data.moves[i]));
+          break;
+        }
+      }
     }
     this.sprites = new Sprites(data.sprites);
 
