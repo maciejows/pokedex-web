@@ -13,6 +13,7 @@ export class Pokemon {
   sprites: Sprites;
   stats: Stat[] = [];
   types: Type[] = [];
+  description: string;
 
   constructor(data: any){
     this.id = data.id;
@@ -37,6 +38,9 @@ export class Pokemon {
     for(let i = 0; i < data.types.length; i++){
       this.types.push(new Type(data.types[i]));
     }
+  }
 
+  setDescription(desc: string){
+    this.description = desc;
   }
 }

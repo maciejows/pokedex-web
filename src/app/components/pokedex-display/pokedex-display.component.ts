@@ -63,8 +63,23 @@ export class PokedexDisplayComponent implements OnInit {
     else this.dataService.getSinglePokemonData(name).subscribe(
       (data) => {
         this.pokemon = data
+        this.getPokemonSpecie(name);
       }
     );
+  }
+
+  getPokemonSpecie(name: string){
+    this.dataService.getPokemonSpecie(name).subscribe(
+      data => {
+        for(let i=0; i<data.flavor_text_entries.length; i++){
+          if (data.flavor_text_entries[i].language.name==="en"){
+            this.pokemon.setDescription(data.flavor_text_entries[i].flavor_text);
+            this.dataService.setPokemonDescription(name, data.flavor_text_entries[i].flavor_text);
+            break;
+          }
+        }
+      }
+    )
   }
 
   selectOption(selected: string): void {

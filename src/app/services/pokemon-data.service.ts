@@ -21,7 +21,7 @@ export class PokemonDataService {
   private _limit: number = 50;
   pokemonPages: PokemonPages = {};
   selectedPokemon: string;
-  PokemonList: PokemonList[] = []; //TODO : Models
+  PokemonList: PokemonList[] = [];
 
   log(){
     console.log(this.PokemonList);
@@ -41,8 +41,12 @@ export class PokemonDataService {
   getSinglePokemonData(name: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/pokemon/${name}`).pipe(
       map(data => new Pokemon(data)),
-      tap( (data) => this.PokemonList[data.name] = data )
+      tap( (data) =>  this.PokemonList[data.name] = data)
     );
+  }
+
+  getPokemonSpecie(name: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/pokemon-species/${name}`);
   }
 
   getSinglePokemonDataStatic(name: string): Pokemon {
@@ -75,10 +79,12 @@ export class PokemonDataService {
     return this.pokemonPages[pageNumber];
   }
 
-  getDataByUrl(url: string): Observable<PokemonPage> {
-    return this.http.get<PokemonPage>(url).pipe(
-      map(data => new PokemonPage(data))
-    );
+  setPokemonDescription(name: string, desc: string){
+    this.PokemonList[name].setDescription(desc);
+  }
+
+  getDataByUrl(url: string) {
+    return this.http.get<any>(url);
   }
 
 
