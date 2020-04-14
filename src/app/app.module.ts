@@ -6,12 +6,15 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { AppComponent } from './app.component';
 import { PokedexDisplayComponent } from './components/pokedex-display/pokedex-display.component';
 import { PokemonListComponent } from './components/pokemon-list/pokemon-list.component';
-
+import { ReversePipe } from './pipes/ReversePipe';
+import { CharToSpacePipe } from './pipes/CharToSpacePipe';
 @NgModule({
   declarations: [
     AppComponent,
     PokedexDisplayComponent,
-    PokemonListComponent
+    PokemonListComponent,
+    ReversePipe,
+    CharToSpacePipe
   ],
   imports: [
     BrowserModule,

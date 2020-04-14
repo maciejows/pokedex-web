@@ -6,12 +6,11 @@
           [routerLink]="['/pokemon', pokemon.name]"
           (click)="selectPokemon(pokemon.name)"
           *ngFor="let pokemon of singlePokemonPage.results">
-          {{pokemon.name | titlecase}}
+          {{pokemon.name | titlecase | space}}
         </a>
       </ul>
     </mdb-card>
   </div>
-
 
   <div class="col-12">
     <nav>
