@@ -1,2 +1,56 @@
-{{pokemon?.name}}
-<button (click)="log()"> Log D</button>
+<div class="container-fluid z-depth-1">
+  <div class="row justify-content-center">
+    <div class="col-12 mt-2 mb-2 text-center">
+      <h3>{{pokemon?.name | titlecase | space}} </h3>
+    </div>
+      <div *ngIf="pokemon" class="col-1"></div>
+      <div *ngIf="pokemon" class="col-auto text-center">
+        <img *ngIf="!showShiny" [src]="pokemon?.sprites?.front_default" alt="thumbnail" class="img-thumbnail"
+          style="width: 140px">
+        <img *ngIf="showShiny" [src]="pokemon?.sprites?.front_shiny" alt="thumbnail" class="img-thumbnail"
+          style="width: 140px">
+      </div>
+      <div *ngIf="pokemon" class="col-1 rmpm">
+        <div *ngFor="let type of pokemon?.types" [style.background-color]="typesMap[type.name]" class=" text-white badge text-wrap" style="width: 4rem;">
+          {{type.name | titlecase}}
+        </div>
+      </div>
+    <div *ngIf="!pokemon" class="spinner-border text-danger" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+
+    <div class="col-12 text-center">
+      <button class="button-rounded" mdbBtn size="sm" type="button" [class.shiny-toggle]="showShiny" mdbWavesEffect (click)="toggleShiny()">Shiny</button>
+    </div>
+  </div>
+
+  <div class="row justify-content-center mt-4 mb-4">
+    <div mdbBtn *ngFor="let option of options" size="sm" class="col-auto" [class.shiny-toggle]="option.clicked" mdbWavesEffect (click)="selectOption(option.option)">
+      {{option.option}}
+    </div>
+
+    <div class="col-11 col-md-8 mt-1 mb-3 spy2">
+      <div *ngIf="options[0].clicked" class="text-justify mt-3 pb-3">
+        <strong>Abilities:</strong> <span *ngFor="let ability of pokemon.abilities; let i = index"> <span *ngIf="i !== 0">,</span> {{ability.name | titlecase}}</span>
+        <br>
+        <p class="mt-5"> <strong>Description:</strong> </p>
+      </div>
+      <div *ngIf="options[1].clicked" class="text-justify mt-3 pb-3"> <strong> Moves </strong></div>
+      <div *ngIf="options[2].clicked" class="text-justify mt-3 pb-3">
+        <div *ngFor="let stat of pokemon.stats | reverse"> <strong>{{stat.name | titlecase}}</strong> : {{stat.value}}</div>
+      </div>
+      <div *ngIf="options[3].clicked" class="text-justify mt-3 pb-3"> <strong> Skuteczność </strong> </div>
+      <!--
+      <div class="spinner-border text-danger" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      -->
+    </div>
+
+  </div>
+  <!--
+    <div class="col-12 text-center">
+      <button mdbBtn type="button" gradient="purple" rounded="true" mdbWavesEffect (click)="log()">Log pokemon</button>
+    </div>
+  -->
+</div>

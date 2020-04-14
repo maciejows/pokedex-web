@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonDataService } from '../../services/pokemon-data.service'
-import { Location } from '@angular/common';
+import { Location, I18nPluralPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import {  ChangeDetectorRef } from '@angular/core';
+import { Pokemon } from '../../models/Pokemon';
 
 @Component({
   selector: 'app-pokedex-display',
@@ -10,8 +10,34 @@ import {  ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./pokedex-display.component.scss']
 })
 export class PokedexDisplayComponent implements OnInit {
-
-  pokemon: {name: string};
+  pokemon: Pokemon;
+  showShiny: boolean = false;
+  options: {option: string, clicked: boolean}[] = [
+    {option: "info", clicked: true},
+    {option: "moves", clicked: false},
+    {option: "stats", clicked: false},
+    {option: "skuteczność", clicked: false},
+  ];
+  typesMap: {[key: string] : string} = {
+    "normal": "#A8A878",
+    "fire": "#F08030",
+    "fighting": "#C03028",
+    "water": "#6890F0",
+    "flying": "#A890F0",
+    "grass": "#78C850",
+    "poison": "#A040A0",
+    "electric": "#F8D030",
+    "ground": "#E0C068",
+    "psychic": "#F85888",
+    "rock": "#B8A038",
+    "ice": "#98D8D8",
+    "bug": "#A8B820",
+    "dragon": "#7038F8",
+    "ghost": "#705898",
+    "dark": "#705848",
+    "steel": "#B8B8D0",
+    "fairy": "#EE99AC",
+  }
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -21,7 +47,7 @@ export class PokedexDisplayComponent implements OnInit {
 
   ngOnInit(): void {
     //TODO Preserve wrong param type
-
+    console.log(this.typesMap["poison"]);
     this.activatedRoute.url.subscribe(
       param => {
         let name = param[1].path
@@ -41,8 +67,18 @@ export class PokedexDisplayComponent implements OnInit {
     );
   }
 
+  selectOption(selected: string): void {
+    for(let i=0; i<this.options.length; i++){
+      if(this.options[i].option === selected) this.options[i].clicked = true;
+      else this.options[i].clicked = false;
+    }
+  }
+
+  toggleShiny(): void {
+    this.showShiny = !this.showShiny;
+  }
   log(){
-    this.dataService.log();
+    console.log(this.pokemon);
   }
 
 }

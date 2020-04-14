@@ -1,27 +1,35 @@
-<nav>
-  <ul class="pagination pg-red pagination-sm justify-content-center">
-    <li class="page-item" (click)="previousPage()">
-      <a class="page-link" aria-label="Previous" mdbWavesEffect>
-        <span aria-hidden="true">&laquo;</span>
-        <span class="sr-only">Previous</span>
-      </a>
-    </li>
-    <li *ngFor="let page of pageArray" class="page-item" [class.active]="selectedPage === page  " (click)="selectPage(page)"><a class="page-link" mdbWavesEffect>{{page}}</a></li>
+<div class="row">
+  <div class="col-12">
+    <mdb-card class="force-overflow scrollbar scrollbar-danger">
+      <ul class="list-group list-group-flush md-pills" *ngIf="singlePokemonPage">
+        <a type="submit" class="list-group-item text-dark" mdbWavesEffect
+          [routerLink]="['/pokemon', pokemon.name]"
+          (click)="selectPokemon(pokemon.name)"
+          *ngFor="let pokemon of singlePokemonPage.results">
+          {{pokemon.name | titlecase | space}}
+        </a>
+      </ul>
+    </mdb-card>
+  </div>
 
-    <li class="page-item" (click)="nextPage()">
-      <a class="page-link" aria-label="Next" mdbWavesEffect>
-        <span aria-hidden="true">&raquo;</span>
-        <span class="sr-only">Next</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+  <div class="col-12">
+    <nav>
+      <ul class="pagination pg-red pagination-sm justify-content-center">
+        <li class="page-item" (click)="previousPage()">
+          <a class="page-link" aria-label="Previous" mdbWavesEffect>
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li *ngFor="let page of pageArray" class="page-item" [class.active]="selectedPage === page  " (click)="selectPage(page)"><a class="page-link" mdbWavesEffect>{{page}}</a></li>
 
-<button type="button" mdbBtn color="danger" mdbWavesEffect (click)="log()">Log</button>
-
-<ul *ngIf="singlePokemonPage">
-  <li *ngFor="let pokemon of singlePokemonPage.results">
-    <button type="submit" class="page-link" mdbWavesEffect [routerLink]="['/pokemon', pokemon.name]" (click)="selectPokemon(pokemon.name)">{{pokemon.name}}</button>
-  </li>
-</ul>
-
+        <li class="page-item" (click)="nextPage()">
+          <a class="page-link" aria-label="Next" mdbWavesEffect>
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
