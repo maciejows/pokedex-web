@@ -39,7 +39,7 @@
         <div *ngIf="!pokemon.description" class="spinner-border text-danger" role="status">
           <span class="sr-only">Loading...</span>
         </div>
-        <p> {{pokemon?.description}} </p>
+        <p class="text-justify"> {{pokemon?.description}} </p>
       </div>
       <div *ngIf="options[1].clicked" class="text-justify mt-3 pb-3">
         <strong> Moves </strong>

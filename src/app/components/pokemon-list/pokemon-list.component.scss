@@ -13,6 +13,31 @@
   min-width: 80%;
   }
 
+/* You can add global styles to this file, and also import other style files */
+.shiny-toggle {
+  border: 1px solid red;
+  color: red;
+}
+
+.selected-pokemon {
+  background-color: #ff5252;
+  color: white;
+}
+
+.spy {
+  background-color: peachpuff;
+}
+
+.spy2 {
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.rmpm {
+  padding: 0;
+  margin: 0;
+}
+
   .scrollbar-danger::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
     background-color: #F5F5F5;

@@ -3,11 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Ability } from '../models/Ability';
-import { PokemonPage } from '../models/PokemonPage';
-import { PokemonPages } from '../models/PokemonPages';
 import { PokemonList } from '../models/PokemonList';
 import { Pokemon } from '../models/Pokemon';
-
+import { Subject, of } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +15,13 @@ export class PokemonDataService {
   constructor(private http: HttpClient) { }
 
   private apiUrl: string = "https://pokeapi.co/api/v2";
-
-  selectedPokemon: string;
   PokemonList: PokemonList[] = [];
+  private pokemonSource = new Subject<string>();
+  pokemonContent$ = this.pokemonSource.asObservable();
+
+  sharePokemonName(name: string): void {
+    this.pokemonSource.next(name);
+  }
 
   log(){
     console.log(this.PokemonList);
