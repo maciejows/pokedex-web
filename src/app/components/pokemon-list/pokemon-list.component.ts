@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PokemonDataService } from '../../services/pokemon-data.service'
 import { PokemonPageService } from '../../services/pokemon-page.service'
 import { PokemonPage } from '../../models/PokemonPage';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -9,15 +10,20 @@ import { PokemonPage } from '../../models/PokemonPage';
   styleUrls: ['./pokemon-list.component.scss']
 })
 export class PokemonListComponent implements OnInit {
-
+  subscription: Subscription;
   singlePokemonPage: PokemonPage;
   totalPages: number[] = [];
   pageArray: number[] = [];
   selectedPage: number = 1;
+  selectedPokemon: string;
 
   constructor(
     private dataService: PokemonDataService,
-    private pageService: PokemonPageService) { }
+    private pageService: PokemonPageService) {
+      this.subscription = this.dataService.pokemonContent$.subscribe((name) => {
+        this.selectedPokemon = name;
+      });
+    }
 
   ngOnInit(): void {
     this.pageArray = this.pageService.fillPages(3);
@@ -89,10 +95,6 @@ export class PokemonListComponent implements OnInit {
       this.pageService.offset += this.pageService.limit;
       this.getPageData(this.singlePokemonPage.next);
     }
-  }
-
-  selectPokemon(pokemon: string) {
-    this.dataService.selectedPokemon = pokemon;
   }
 
   log(): void {

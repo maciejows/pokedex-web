@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonDataService } from '../../services/pokemon-data.service'
-import { Location, I18nPluralPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Pokemon } from '../../models/Pokemon';
+import { of } from 'rxjs'
 
 @Component({
   selector: 'app-pokedex-display',
@@ -41,7 +41,6 @@ export class PokedexDisplayComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private location: Location,
     private dataService: PokemonDataService,
     ) { }
 
@@ -49,8 +48,9 @@ export class PokedexDisplayComponent implements OnInit {
     //TODO Preserve wrong param type
     this.activatedRoute.url.subscribe(
       param => {
-        let name = param[1].path
+        let name = param[1].path;
         this.getPokemon(name);
+        this.dataService.sharePokemonName(name);
       }
     );
   }

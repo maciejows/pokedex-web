@@ -2,10 +2,12 @@
   <div class="col-12">
     <mdb-card class="force-overflow scrollbar scrollbar-danger">
       <ul class="list-group list-group-flush md-pills" *ngIf="singlePokemonPage">
-        <a type="submit" class="list-group-item text-dark" mdbWavesEffect
-          [routerLink]="['/pokemon', pokemon.name]"
-          (click)="selectPokemon(pokemon.name)"
-          *ngFor="let pokemon of singlePokemonPage.results">
+        <a type="submit" class="list-group-item" mdbWavesEffect
+          *ngFor="let pokemon of singlePokemonPage.results"
+          [class.selected-pokemon]="pokemon.name === selectedPokemon"
+          [ngClass]="{'selected-pokemon text-white': pokemon.name === selectedPokemon,
+           'text-dark': pokemon.name !== selectedPokemon}"
+          [routerLink]="['/pokemon', pokemon.name]">
           {{pokemon?.name | titlecase | space}}
         </a>
       </ul>
