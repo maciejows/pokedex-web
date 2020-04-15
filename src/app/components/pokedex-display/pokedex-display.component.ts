@@ -38,7 +38,9 @@ export class PokedexDisplayComponent implements OnInit {
     "steel": "#B8B8D0",
     "fairy": "#EE99AC",
   }
-
+  movesMap: {[key: string] : string}[] = [];
+  moveTypeMap: {[key: string] : string}[] = [];
+  countMoves: number = 0;
   constructor(
     private activatedRoute: ActivatedRoute,
     private dataService: PokemonDataService,
@@ -49,8 +51,10 @@ export class PokedexDisplayComponent implements OnInit {
     this.activatedRoute.url.subscribe(
       param => {
         let name = param[1].path;
+        this.countMoves = 0;
         this.getPokemon(name);
         this.dataService.sharePokemonName(name);
+        this.getMovesOfAllTypes();
       }
     );
   }
@@ -58,18 +62,42 @@ export class PokedexDisplayComponent implements OnInit {
   getPokemon(name: string){
     if (this.dataService.PokemonList[name]) {
       this.pokemon = this.dataService.getSinglePokemonDataStatic(name)
+      this.getMovesDescriptions();
     }
     else this.dataService.getSinglePokemonData(name).subscribe(
       (data) => {
-        this.pokemon = data
+        this.pokemon = data;
         this.getPokemonSpecie(name);
+        this.getMovesDescriptions();
+      }
+    );
+  }
+
+  getMovesOfAllTypes(){
+    for (const element of Object.keys(this.typesMap)) {
+    this.getMovesOfSingleType(element);
+    }
+  }
+
+  getMovesOfSingleType(type: string){
+    if(Object.keys(this.dataService.moveTypeMap).length !== 0) {
+      this.moveTypeMap = this.dataService.getMovesPerTypeStatic();
+    }
+    else this.dataService.getMovesPerType(type).subscribe(
+      (data) => {
+        for(let i=0; i<data.moves.length; i++){
+          this.moveTypeMap[data.moves[i].name] = data.name;
+        }
       }
     );
   }
 
   getPokemonSpecie(name: string){
-    this.dataService.getPokemonSpecie(name).subscribe(
-      data => {
+    let specie = name;
+    let index = name.search("-");
+    if(name!=="nidoran-f" && name!=="nidoran-m" && index !== -1) specie = name.slice(0, index);
+    this.dataService.getPokemonSpecie(specie).subscribe(
+      (data) => {
         for(let i=0; i<data.flavor_text_entries.length; i++){
           if (data.flavor_text_entries[i].language.name==="en"){
             this.pokemon.setDescription(data.flavor_text_entries[i].flavor_text);
@@ -79,6 +107,25 @@ export class PokedexDisplayComponent implements OnInit {
         }
       }
     )
+  }
+
+  getMoveDescription(name: string){
+    if (this.dataService.moveList[name]) {
+      this.movesMap[name] = this.dataService.getMoveDescriptionStatic(name);
+      this.countMoves++;
+    }
+    else this.dataService.getMoveDescription(name).subscribe(
+      (data) => {
+        this.movesMap[data.name] = data.desc;
+        this.countMoves++;
+      }
+    );
+  }
+
+  getMovesDescriptions(){
+    for(let i=0; i<this.pokemon.moves.length; i++){
+      this.getMoveDescription(this.pokemon.moves[i].name);
+    }
   }
 
   selectOption(selected: string): void {
@@ -91,8 +138,17 @@ export class PokedexDisplayComponent implements OnInit {
   toggleShiny(): void {
     this.showShiny = !this.showShiny;
   }
+
+  getTypeColorByMove(move: string){
+    return this.typesMap[this.moveTypeMap[move]];
+  }
+  getTypeByMove(move: string){
+    return this.moveTypeMap[move];
+  }
+
   log(){
-    console.log(this.pokemon);
+    this.dataService.log();
+    console.log(this.moveTypeMap);
   }
 
 }

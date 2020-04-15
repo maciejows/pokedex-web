@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Ability } from '../models/Ability';
 import { PokemonList } from '../models/PokemonList';
 import { Pokemon } from '../models/Pokemon';
-import { Subject, of } from 'rxjs'
+import { Subject } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +15,8 @@ export class PokemonDataService {
 
   private apiUrl: string = "https://pokeapi.co/api/v2";
   PokemonList: PokemonList[] = [];
+  moveList: {[key: string] : string}[] = [];
+  moveTypeMap: {[key: string] : string}[] = [];
   private pokemonSource = new Subject<string>();
   pokemonContent$ = this.pokemonSource.asObservable();
 
@@ -24,7 +25,7 @@ export class PokemonDataService {
   }
 
   log(){
-    console.log(this.PokemonList);
+    console.log(this.moveTypeMap);
   }
 
   getSinglePokemonData(name: string): Observable<any> {
@@ -43,15 +44,41 @@ export class PokemonDataService {
     return this.http.get<any>(`${this.apiUrl}/pokemon-species/${name}`);
   }
 
+  getMoveDescription(name: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/move/${name}`).pipe(
+      map(data => this.findMoveDescription(data)),
+      tap( (data) =>  this.moveList[data.name] = data.desc)
+    );
+  }
+  getMoveDescriptionStatic(name: string): string {
+    return this.moveList[name];
+  }
+
+  getMovesPerType(type: string) {
+    return this.http.get<any>(`${this.apiUrl}/type/${type}`).pipe(
+      tap( (data) =>  {
+        for(let i=0; i<data.moves.length; i++){
+          this.moveTypeMap[data.moves[i].name] = data.name;
+        }
+      })
+    );
+  }
+
+  getMovesPerTypeStatic(){
+    return this.moveTypeMap;
+  }
+
+  findMoveDescription(data: any){
+    for(let i=0; i<data.flavor_text_entries.length; i++){
+      if(data.flavor_text_entries[i].language.name === "en"){
+        return {name: data.name, desc: data.flavor_text_entries[i].flavor_text}
+      }
+    }
+  }
+
   setPokemonDescription(name: string, desc: string){
     this.PokemonList[name].setDescription(desc);
   }
 
-  // TODO: Use or delete
-  getSingleAbility(id: number): Observable<Ability> {
-    return this.http.get<any>(`${this.apiUrl}/ability/${id}`).pipe(
-      map(data => new Ability(data))
-    );
-  }
 
 }
