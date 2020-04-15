@@ -8,13 +8,15 @@ import { PokedexDisplayComponent } from './components/pokedex-display/pokedex-di
 import { PokemonListComponent } from './components/pokemon-list/pokemon-list.component';
 import { ReversePipe } from './pipes/ReversePipe';
 import { CharToSpacePipe } from './pipes/CharToSpacePipe';
+import { NavbarComponent } from './components/navbar/navbar.component';
 @NgModule({
   declarations: [
     AppComponent,
     PokedexDisplayComponent,
     PokemonListComponent,
     ReversePipe,
-    CharToSpacePipe
+    CharToSpacePipe,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
