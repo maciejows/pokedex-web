@@ -1,7 +1,8 @@
 <app-navbar></app-navbar>
+<div class="mx-0"> <app-filter #filter (filter)="pokemonList.getFilteredPages(filter.pokemonName, filter.selectedTypeOption)"></app-filter> </div>
 <div class="container">
   <div class="row mt-2">
     <div class="col-md-12 col-lg-9"><router-outlet></router-outlet></div>
-    <div class="col-md-12 mt-2 mt-lg-0 col-lg-3"><app-pokemon-list></app-pokemon-list></div>
+    <div class="col-md-12 mt-2 mt-lg-0 col-lg-3 mr-0"><app-pokemon-list #pokemonList></app-pokemon-list></div>
   </div>
 </div>
