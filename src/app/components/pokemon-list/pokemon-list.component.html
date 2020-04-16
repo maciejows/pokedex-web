@@ -1,5 +1,6 @@
 <div class="row mr-0">
   <div class="col-12">
+  <!-- Pokemon list -->
     <mdb-card class="force-overflow scrollbar scrollbar-danger">
       <ul class="list-group list-group-flush md-pills" *ngIf="singlePokemonPage">
         <a type="submit" class="list-group-item" mdbWavesEffect
@@ -13,18 +14,20 @@
       </ul>
     </mdb-card>
   </div>
-
+  <!-- Pagination labels -->
   <div class="col-12">
     <nav>
-      <ul class="pagination pg-red pagination-sm justify-content-center">
+      <ul class="pagination pg-red pagination-md justify-content-center">
+        <!-- previous -->
         <li class="page-item" (click)="previousPage()">
           <a class="page-link" aria-label="Previous" mdbWavesEffect>
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Previous</span>
           </a>
         </li>
+        <!-- Page numbers -->
         <li *ngFor="let page of pageArray" class="page-item" [class.active]="selectedPage === page  " (click)="selectPage(page)"><a class="page-link" mdbWavesEffect>{{page}}</a></li>
-
+        <!-- next-->
         <li class="page-item" (click)="nextPage()">
           <a class="page-link" aria-label="Next" mdbWavesEffect>
             <span aria-hidden="true">&raquo;</span>

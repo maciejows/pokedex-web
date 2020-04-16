@@ -35,9 +35,11 @@ export class FilterComponent implements OnInit {
 
   getFilteredPage(){
     this.pokemonName = this.pokemonName.toLowerCase();
+    if(this.pokemonName !== ""){
+      this.selectedTypeOption = "";
+    }
     this.filter.emit(null)
     this.pokemonName="";
-    this.selectedTypeOption="";
   }
 
   selectTypeOption(type: string){
@@ -45,6 +47,7 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Getting pokemon Type names
     for (const element of Object.keys(this.typesMap)) {
       this.typeKeys.push(element);
       }

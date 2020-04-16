@@ -4,12 +4,17 @@
     <div class="col-12 mt-2 mb-2 text-center">
       <h3>{{pokemon?.name | titlecase | space}} </h3>
     </div>
+    <!-- If image not provided -->
+    <div class="col-12 my-1 text-center">
+      <p *ngIf="!pokemon.sprites.front_default && !showShiny"> Pokemon image not provided :( </p>
+      <p *ngIf="!pokemon.sprites.front_shiny && showShiny"> Shiny pokemon image not provided :( </p>
+    </div>
     <!-- Pokemon Img -->
     <div *ngIf="pokemon?.sprites" class="col-1"></div>
     <div *ngIf="pokemon?.sprites" class="col-auto text-center">
-      <img *ngIf="!showShiny" [src]="pokemon?.sprites?.front_default" alt="thumbnail" class="img-thumbnail"
+      <img *ngIf="!showShiny" [src]="pokemon?.sprites?.front_default" alt="Pokemon image" class="img-thumbnail"
         style="width: 140px">
-      <img *ngIf="showShiny" [src]="pokemon?.sprites?.front_shiny" alt="thumbnail" class="img-thumbnail"
+      <img *ngIf="showShiny" [src]="pokemon?.sprites?.front_shiny" alt="Pokemon shiny" class="img-thumbnail"
         style="width: 140px">
     </div>
     <!-- Pokemon types -->
@@ -69,9 +74,6 @@
       <div *ngIf="options[2].clicked" class="text-justify mt-3 pb-3">
         <div *ngFor="let stat of pokemon.stats | reverse"> <strong>{{stat.name | titlecase}}</strong> : {{stat.value}}</div>
       </div>
-      <!--
-      <div *ngIf="options[3].clicked" class="text-justify mt-3 pb-3"> <strong> Effectiveness </strong> </div>
-      -->
     </div>
   </div>
 </div>
