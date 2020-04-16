@@ -12,9 +12,9 @@
     <!-- Pokemon Img -->
     <div *ngIf="pokemon?.sprites" class="col-1"></div>
     <div *ngIf="pokemon?.sprites" class="col-auto text-center">
-      <img *ngIf="!showShiny" [src]="pokemon?.sprites?.front_default" alt="Pokemon image" class="img-thumbnail"
+      <img *ngIf="!showShiny && pokemon.sprites.front_default" [src]="pokemon?.sprites?.front_default" alt="Pokemon image" class="img-thumbnail"
         style="width: 140px">
-      <img *ngIf="showShiny" [src]="pokemon?.sprites?.front_shiny" alt="Pokemon shiny" class="img-thumbnail"
+      <img *ngIf="showShiny && pokemon.sprites.front_shiny" [src]="pokemon?.sprites?.front_shiny" alt="Pokemon shiny" class="img-thumbnail"
         style="width: 140px">
     </div>
     <!-- Pokemon types -->
@@ -35,7 +35,7 @@
   <!-- Display Section -->
   <div class="row justify-content-center mt-4 mb-4">
     <!-- Options -->
-    <div mdbBtn *ngFor="let option of options" size="sm" class="col-auto" [class.shiny-toggle]="option.clicked" mdbWavesEffect (click)="selectOption(option.option)">
+    <div mdbBtn *ngFor="let option of options" size="sm" class="col-auto" [class.shiny-toggle]="option.clicked"  (click)="selectOption(option.option)">
       {{option.option}}
     </div>
 
@@ -66,6 +66,7 @@
           </div>
         </span>
         </div>
+        <div class="w-100"></div>
         <div *ngIf="pokemon.moves.length !== countMoves" class="spinner-border text-danger" role="status">
           <span class="sr-only">Loading...</span>
         </div>
