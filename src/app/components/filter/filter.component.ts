@@ -34,6 +34,7 @@ export class FilterComponent implements OnInit {
   constructor() { }
 
   getFilteredPage(){
+    this.pokemonName = this.pokemonName.toLowerCase();
     this.filter.emit(null)
     this.pokemonName="";
     this.selectedTypeOption="";
