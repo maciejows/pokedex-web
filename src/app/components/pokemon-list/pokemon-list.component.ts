@@ -48,6 +48,7 @@ export class PokemonListComponent implements OnInit {
           this.singlePokemonPage = data
           let pages = Math.ceil(parseInt(this.singlePokemonPage.count) / this.pageService.limit);
           this.totalPages = this.pageService.fillPages(pages);
+          this.pageArray = this.pageService.fillPages(3);
         }
       );
     }
@@ -69,11 +70,9 @@ export class PokemonListComponent implements OnInit {
 
   getFilteredPages(name?: string, type?: string): void {
     if (name !== "") {
-      console.log(name);
       this.router.navigate([`/pokemon/${name}`]);
     }
     else if (type!=="") {
-      console.log("type: " + type);
       this.pageService.getPage(this.selectedPage,'', type).subscribe(
         (data)=> {
           this.selectedPage = 1;
@@ -88,10 +87,8 @@ export class PokemonListComponent implements OnInit {
           }
         }
       );
-      console.log("List component trying to get data");
     }
     else {
-      console.log("getting init page");
       this.getInitPage();
     }
   }
@@ -133,10 +130,5 @@ export class PokemonListComponent implements OnInit {
       this.pageService.offset += this.pageService.limit;
       this.getPageData(this.singlePokemonPage.next);
     }
-  }
-
-  log(): void {
-    console.log(this.singlePokemonPage);
-    this.pageService.log();
   }
 }

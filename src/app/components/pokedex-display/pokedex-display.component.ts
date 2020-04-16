@@ -16,7 +16,7 @@ export class PokedexDisplayComponent implements OnInit {
     {option: "info", clicked: true},
     {option: "moves", clicked: false},
     {option: "stats", clicked: false},
-    {option: "skuteczność", clicked: false},
+    //{option: "skuteczność", clicked: false},
   ];
   typesMap: {[key: string] : string} = {
     "normal": "#A8A878",
@@ -144,11 +144,6 @@ export class PokedexDisplayComponent implements OnInit {
   }
   getTypeByMove(move: string){
     return this.moveTypeMap[move];
-  }
-
-  log(){
-    this.dataService.log();
-    console.log(this.moveTypeMap);
   }
 
 }

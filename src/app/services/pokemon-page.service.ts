@@ -31,7 +31,6 @@ export class PokemonPageService {
   }
 
   getPage(pageNumber: number, url?: string, query?: string): Observable<PokemonPage> {
-    console.log(`Fetching page ${pageNumber} from server: ${this.resource}`);
     if(query) {
       this.resource = `type/${query}`;
       this.pokemonPages = {};
@@ -42,10 +41,8 @@ export class PokemonPageService {
       );
     }
     let endpoint = `${this.apiUrl}/${this.resource}?offset=${this._offset}&limit=${this._limit}`;
-    console.log(endpoint);
     if(url){
       endpoint = url;
-      console.log(`By url: ${url}`);
     }
 
     return this.http.get<PokemonPage>(endpoint).pipe(
@@ -86,12 +83,10 @@ export class PokemonPageService {
     next: "",
     previous: "",
     results: results}
-    console.log(page);
     return page;
   }
 
   getPageStatic(pageNumber: number): PokemonPage {
-    console.log("Getting static page" + pageNumber);
     return this.pokemonPages[pageNumber];
   }
 
@@ -101,9 +96,5 @@ export class PokemonPageService {
       list.push(i);
     }
     return list
-  }
-
-  log(){
-    console.log(this.pokemonPages);
   }
 }

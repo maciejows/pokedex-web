@@ -24,10 +24,6 @@ export class PokemonDataService {
     this.pokemonSource.next(name);
   }
 
-  log(){
-    console.log(this.moveTypeMap);
-  }
-
   getSinglePokemonData(name: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/pokemon/${name}`).pipe(
       map(data => new Pokemon(data)),
@@ -36,7 +32,6 @@ export class PokemonDataService {
   }
 
   getSinglePokemonDataStatic(name: string): Pokemon {
-    console.log("Getting static pokemon " + name);
     return this.PokemonList[name];
   }
 

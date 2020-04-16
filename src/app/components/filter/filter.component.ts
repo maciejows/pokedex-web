@@ -34,7 +34,6 @@ export class FilterComponent implements OnInit {
   constructor() { }
 
   getFilteredPage(){
-    console.log("emitting")
     this.filter.emit(null)
     this.pokemonName="";
     this.selectedTypeOption="";
