@@ -29,9 +29,9 @@ export class PokemonPageService {
   set offset(value: number) {
     this._offset = value;
   }
-
+  // Get page from server
   getPage(pageNumber: number, url?: string, query?: string): Observable<PokemonPage> {
-    console.log(`Fetching page ${pageNumber} from server: ${this.resource}`);
+    // If "Type" filter set, getting pokemons of specific type(query), else getting Basic page
     if(query) {
       this.resource = `type/${query}`;
       this.pokemonPages = {};
@@ -42,10 +42,9 @@ export class PokemonPageService {
       );
     }
     let endpoint = `${this.apiUrl}/${this.resource}?offset=${this._offset}&limit=${this._limit}`;
-    console.log(endpoint);
+    // If url passed, making call for url endpoint
     if(url){
       endpoint = url;
-      console.log(`By url: ${url}`);
     }
 
     return this.http.get<PokemonPage>(endpoint).pipe(
@@ -53,7 +52,11 @@ export class PokemonPageService {
       tap( (data) => this.pokemonPages[pageNumber] = data )
     );
   }
-
+  // Get page from local service
+  getPageStatic(pageNumber: number): PokemonPage {
+    return this.pokemonPages[pageNumber];
+  }
+  // Paginate received data (only when filtering)
   paginate(data: PokemonPage): PokemonPages{
     let pokemonPages: PokemonPages = {};
 
@@ -74,7 +77,7 @@ export class PokemonPageService {
     }
     return pokemonPages;
   }
-
+  // Map received data to PokemonPage type
   mapDataToPage(data: any): PokemonPage{
     let page: PokemonPage;
     let results = []
@@ -86,24 +89,14 @@ export class PokemonPageService {
     next: "",
     previous: "",
     results: results}
-    console.log(page);
     return page;
   }
-
-  getPageStatic(pageNumber: number): PokemonPage {
-    console.log("Getting static page" + pageNumber);
-    return this.pokemonPages[pageNumber];
-  }
-
+  // Set page numbers
   fillPages(counter: number): Array<number> {
     let list: Array<number> = [];
     for (let i=1; i<= counter; i++){
       list.push(i);
     }
-    return list
-  }
-
-  log(){
-    console.log(this.pokemonPages);
+    return list;
   }
 }

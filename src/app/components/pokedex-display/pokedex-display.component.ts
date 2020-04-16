@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { PokemonDataService } from '../../services/pokemon-data.service'
 import { ActivatedRoute } from '@angular/router';
 import { Pokemon } from '../../models/Pokemon';
-import { of } from 'rxjs'
 
 @Component({
   selector: 'app-pokedex-display',
@@ -15,9 +14,9 @@ export class PokedexDisplayComponent implements OnInit {
   options: {option: string, clicked: boolean}[] = [
     {option: "info", clicked: true},
     {option: "moves", clicked: false},
-    {option: "stats", clicked: false},
-    {option: "skuteczność", clicked: false},
+    {option: "stats", clicked: false}
   ];
+  // Maping type to color
   typesMap: {[key: string] : string} = {
     "normal": "#A8A878",
     "fire": "#F08030",
@@ -38,7 +37,9 @@ export class PokedexDisplayComponent implements OnInit {
     "steel": "#B8B8D0",
     "fairy": "#EE99AC",
   }
+  // Maping move's name to description
   movesMap: {[key: string] : string}[] = [];
+  // Maping move's name to move Type (ex. poison)
   moveTypeMap: {[key: string] : string}[] = [];
   countMoves: number = 0;
   constructor(
@@ -58,7 +59,7 @@ export class PokedexDisplayComponent implements OnInit {
       }
     );
   }
-
+  // Fetch pokemon, if already fetched get static version
   getPokemon(name: string){
     if (this.dataService.PokemonList[name]) {
       this.pokemon = this.dataService.getSinglePokemonDataStatic(name)
@@ -72,13 +73,13 @@ export class PokedexDisplayComponent implements OnInit {
       }
     );
   }
-
+  // Get every move
   getMovesOfAllTypes(){
     for (const element of Object.keys(this.typesMap)) {
     this.getMovesOfSingleType(element);
     }
   }
-
+  // Get list of moves of specific Type (ex. Poison), if already fetched get static version
   getMovesOfSingleType(type: string){
     if(Object.keys(this.dataService.moveTypeMap).length !== 0) {
       this.moveTypeMap = this.dataService.getMovesPerTypeStatic();
@@ -91,7 +92,7 @@ export class PokedexDisplayComponent implements OnInit {
       }
     );
   }
-
+  // Get pokemon specie - pokemon description purposes
   getPokemonSpecie(name: string){
     let specie = name;
     let index = name.search("-");
@@ -108,7 +109,7 @@ export class PokedexDisplayComponent implements OnInit {
       }
     )
   }
-
+  // Get move's description
   getMoveDescription(name: string){
     if (this.dataService.moveList[name]) {
       this.movesMap[name] = this.dataService.getMoveDescriptionStatic(name);
@@ -121,34 +122,30 @@ export class PokedexDisplayComponent implements OnInit {
       }
     );
   }
-
+  // Get multiple move's descriptions
   getMovesDescriptions(){
     for(let i=0; i<this.pokemon.moves.length; i++){
       this.getMoveDescription(this.pokemon.moves[i].name);
     }
   }
-
+  // Toggle between 'Info' , 'Moves', 'Stats'
   selectOption(selected: string): void {
     for(let i=0; i<this.options.length; i++){
       if(this.options[i].option === selected) this.options[i].clicked = true;
       else this.options[i].clicked = false;
     }
   }
-
+  // Show shiny version
   toggleShiny(): void {
     this.showShiny = !this.showShiny;
   }
-
+  // Map Move -> Type -> Color (ex. Vine-whip -> "grass": "#78C850")
   getTypeColorByMove(move: string){
     return this.typesMap[this.moveTypeMap[move]];
   }
+  // Map Move to Type (ex. Vine-whip -> grass)
   getTypeByMove(move: string){
     return this.moveTypeMap[move];
-  }
-
-  log(){
-    this.dataService.log();
-    console.log(this.moveTypeMap);
   }
 
 }

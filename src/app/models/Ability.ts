@@ -1,5 +1,4 @@
 // Pokemon's special ability
-// TODO: URL Extend - Ability description purposes
 export class Ability {
   name: string;
   url: string;

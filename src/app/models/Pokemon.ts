@@ -21,7 +21,7 @@ export class Pokemon {
     for(let i = 0; i < data.abilities.length; i++){
       this.abilities.push(new Ability(data.abilities[i]));
     }
-
+    // Get only moves that can be learned by 'level-up'
     for(let i = 0; i < data.moves.length; i++){
       for (let j=0; j< data.moves[i].version_group_details.length; j++){
         if (data.moves[i].version_group_details[j].move_learn_method.name === "level-up") {
