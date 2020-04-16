@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PokemonDataService } from '../../services/pokemon-data.service'
 import { PokemonPageService } from '../../services/pokemon-page.service'
 import { PokemonPage } from '../../models/PokemonPage';
@@ -12,6 +13,7 @@ import { Subscription } from 'rxjs';
 export class PokemonListComponent implements OnInit {
   subscription: Subscription;
   singlePokemonPage: PokemonPage;
+  pageServicePagesCounter: number;
   totalPages: number[] = [];
   pageArray: number[] = [];
   selectedPage: number = 1;
@@ -19,7 +21,8 @@ export class PokemonListComponent implements OnInit {
 
   constructor(
     private dataService: PokemonDataService,
-    private pageService: PokemonPageService) {
+    private pageService: PokemonPageService,
+    private router: Router) {
       this.subscription = this.dataService.pokemonContent$.subscribe((name) => {
         this.selectedPokemon = name;
       });
@@ -32,6 +35,10 @@ export class PokemonListComponent implements OnInit {
 
   // Get first page and set Pagination
   getInitPage(): void {
+    this.singlePokemonPage = undefined;
+    this.pageService.pokemonPages = {};
+    this.pageService.resource = "pokemon";
+
     if (this.pageService.pokemonPages[this.selectedPage]) {
       this.singlePokemonPage = this.pageService.getPageStatic(this.selectedPage);
     }
@@ -60,6 +67,37 @@ export class PokemonListComponent implements OnInit {
     }
   }
 
+  getFilteredPages(name?: string, type?: string): void {
+    if (name !== "") {
+      console.log(name);
+      this.router.navigate([`/pokemon/${name}`]);
+    }
+    else if (type!=="") {
+      console.log("type: " + type);
+      this.pageService.getPage(this.selectedPage,'', type).subscribe(
+        (data)=> {
+          this.selectedPage = 1;
+          this.pageServicePagesCounter = Object.keys(this.pageService.pokemonPages).length;
+          this.singlePokemonPage = this.pageService.pokemonPages[this.selectedPage];
+          this.totalPages = this.pageService.fillPages(this.pageServicePagesCounter);
+          if(this.pageServicePagesCounter < 3){
+            this.pageArray = this.pageService.fillPages(this.pageServicePagesCounter);
+          }
+          else {
+            this.pageArray = this.pageService.fillPages(3);
+          }
+        }
+      );
+      console.log("List component trying to get data");
+    }
+    else {
+      console.log("getting init page");
+      this.getInitPage();
+    }
+  }
+
+
+
   selectPage(page: number): void{
     if(page > 1 && page < this.totalPages.length){
       this.pageArray[0] = page-1;
@@ -72,7 +110,7 @@ export class PokemonListComponent implements OnInit {
   }
 
   previousPage(): void {
-    if (this.singlePokemonPage.previous) {
+    if (this.singlePokemonPage.previous || this.selectedPage > 1) {
       if(this.selectedPage > 2 && this.selectedPage < this.totalPages.length) {
         for (let i=0; i<this.pageArray.length; i++){
           this.pageArray[i] -=1;
@@ -85,7 +123,7 @@ export class PokemonListComponent implements OnInit {
   }
 
   nextPage(): void {
-    if(this.singlePokemonPage.next) {
+    if(this.singlePokemonPage.next || this.selectedPage<this.pageServicePagesCounter) {
       if(this.selectedPage >= 2 && this.selectedPage < this.totalPages.length-1) {
         for (let i=0; i<this.pageArray.length; i++){
           this.pageArray[i] +=1;
@@ -98,9 +136,7 @@ export class PokemonListComponent implements OnInit {
   }
 
   log(): void {
-    console.log(this.pageArray[0]);
-    console.log(this.pageArray[1]);
-    console.log(this.pageArray[2]);
-    console.log(this.selectedPage);
+    console.log(this.singlePokemonPage);
+    this.pageService.log();
   }
 }

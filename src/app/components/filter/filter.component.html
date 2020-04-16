@@ -1,0 +1,52 @@
+<mdb-card class="my-3">
+  <mdb-card-body class=" py-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-lg-9">
+          <div class="form-group rmpm row justify-content-center">
+            <div class="col-auto my-auto">
+              <div class="md-form">
+                <input mdbInput  type="text" class="form-control " id="inputCity" placeholder="Pokemon name" [(ngModel)]="pokemonName">
+              </div>
+            </div>
+            <div class="col-auto my-auto">
+              <div class="btn-group btn-block" mdbDropdown>
+                <button mdbDropdownToggle type="button"  mdbBtn size="sm" class="dropdown-toggle z-depth-1 button-rounded"
+                  [style.border-color]="typesMap[selectedTypeOption]"
+                  [style.color]="typesMap[selectedTypeOption]"
+                  mdbWavesEffect> {{selectedTypeOption || "Types"}} </button>
+                <div class="dropdown-menu">
+                  <ul class="rmpm">
+                    <li class="dropdown-item" (click)="selectTypeOption('');">
+                      <div class="badge text-wrap" style="width: 4rem;"  >
+                        none
+                      </div>
+                    </li>
+                    <li *ngFor="let pokemonType of typeKeys" class="dropdown-item" (click)="selectTypeOption(pokemonType);" >
+                      <div [style.background-color]="typesMap[pokemonType]" class="text-white badge text-wrap" style="width: 4rem;">
+                        {{pokemonType | titlecase}}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto my-auto text-center">
+              <button mdbBtn size="sm" type="button" mdbWavesEffect (click)="getFilteredPage()">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mdb-card-body>
+</mdb-card>
+<!--
+   {{(selectedFilters.salaryMin == 0
+                    && selectedFilters.salaryMax == 20000
+                    && salaryMin.pristine
+                    && salaryMax.pristine) ? "Wynagrodzenie" : (selectedFilters.salaryMin + " - " + selectedFilters.salaryMax)}}
+-->
+
+
+
+

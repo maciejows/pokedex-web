@@ -1,30 +1,35 @@
 <div class="container-fluid z-depth-1">
   <div class="row justify-content-center">
+    <!-- Pokemon name -->
     <div class="col-12 mt-2 mb-2 text-center">
       <h3>{{pokemon?.name | titlecase | space}} </h3>
     </div>
-      <div *ngIf="pokemon?.sprites" class="col-1"></div>
-      <div *ngIf="pokemon?.sprites" class="col-auto text-center">
-        <img *ngIf="!showShiny" [src]="pokemon?.sprites?.front_default" alt="thumbnail" class="img-thumbnail"
-          style="width: 140px">
-        <img *ngIf="showShiny" [src]="pokemon?.sprites?.front_shiny" alt="thumbnail" class="img-thumbnail"
-          style="width: 140px">
+    <!-- Pokemon Img -->
+    <div *ngIf="pokemon?.sprites" class="col-1"></div>
+    <div *ngIf="pokemon?.sprites" class="col-auto text-center">
+      <img *ngIf="!showShiny" [src]="pokemon?.sprites?.front_default" alt="thumbnail" class="img-thumbnail"
+        style="width: 140px">
+      <img *ngIf="showShiny" [src]="pokemon?.sprites?.front_shiny" alt="thumbnail" class="img-thumbnail"
+        style="width: 140px">
+    </div>
+    <!-- Pokemon types -->
+    <div *ngIf="pokemon?.types" class="col-1 rmpm">
+      <div *ngFor="let type of pokemon?.types" [style.background-color]="typesMap[type.name]" class=" text-white badge text-wrap" style="width: 4rem;">
+        {{type.name | titlecase}}
       </div>
-      <div *ngIf="pokemon?.types" class="col-1 rmpm">
-        <div *ngFor="let type of pokemon?.types" [style.background-color]="typesMap[type.name]" class=" text-white badge text-wrap" style="width: 4rem;">
-          {{type.name | titlecase}}
-        </div>
-      </div>
+    </div>
+    <!-- Spinner -->
     <div *ngIf="!pokemon" class="spinner-border text-danger" role="status">
       <span class="sr-only">Loading...</span>
     </div>
-
+    <!-- Toggle shiny button -->
     <div class="col-12 text-center">
       <button class="button-rounded" mdbBtn size="sm" type="button" [class.shiny-toggle]="showShiny" mdbWavesEffect (click)="toggleShiny()">Shiny</button>
     </div>
   </div>
-
+  <!-- Display Section -->
   <div class="row justify-content-center mt-4 mb-4">
+    <!-- Options -->
     <div mdbBtn *ngFor="let option of options" size="sm" class="col-auto" [class.shiny-toggle]="option.clicked" mdbWavesEffect (click)="selectOption(option.option)">
       {{option.option}}
     </div>
@@ -47,8 +52,7 @@
         <strong> Moves </strong>
         <div *ngIf="pokemon.moves.length === countMoves">
         <span *ngFor="let move of pokemon.moves;">
-          <p class="rmpm"> {{move.name | titlecase | space}} </p>
-          <div mdbBtn size="sm" class="col-auto" mdbWavesEffect (click)="desc.toggle();"> show </div>
+          <div mdbBtn size="sm" class="col-auto ml-0" mdbWavesEffect (click)="desc.toggle();"> {{move.name | titlecase}} </div>
           <div mdbCollapse #desc>
             <div [style.background-color]="getTypeColorByMove(move.name)" class=" text-white badge text-wrap" style="width: 4rem;">
               {{getTypeByMove(move.name) | titlecase}}
@@ -73,7 +77,6 @@
       </div>
       -->
     </div>
-
   </div>
 
     <div class="col-12 text-center">

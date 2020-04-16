@@ -1,5 +1,6 @@
-import { BrowserModule,  } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -10,6 +11,7 @@ import { PokemonListComponent } from './components/pokemon-list/pokemon-list.com
 import { ReversePipe } from './pipes/ReversePipe';
 import { CharToSpacePipe } from './pipes/CharToSpacePipe';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { FilterComponent } from './components/filter/filter.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,13 +19,15 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     PokemonListComponent,
     ReversePipe,
     CharToSpacePipe,
-    NavbarComponent
+    NavbarComponent,
+    FilterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    FormsModule,
     MDBBootstrapModule.forRoot()
   ],
   providers: [],

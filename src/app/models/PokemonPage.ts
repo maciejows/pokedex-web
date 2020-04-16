@@ -6,6 +6,7 @@ export class PokemonPage {
   next: string;
   previous: string;
   results: {name: string, url: string}[];
+
   constructor(props: any) {
 		Object.assign(this, props);
   }
