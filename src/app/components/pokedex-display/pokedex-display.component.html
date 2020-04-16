@@ -6,15 +6,15 @@
     </div>
     <!-- If image not provided -->
     <div class="col-12 my-1 text-center">
-      <p *ngIf="!pokemon.sprites.front_default && !showShiny"> Pokemon image not provided :( </p>
-      <p *ngIf="!pokemon.sprites.front_shiny && showShiny"> Shiny pokemon image not provided :( </p>
+      <p *ngIf="!pokemon?.sprites.front_default && !showShiny"> Pokemon image not provided :( </p>
+      <p *ngIf="!pokemon?.sprites.front_shiny && showShiny"> Shiny pokemon image not provided :( </p>
     </div>
     <!-- Pokemon Img -->
     <div *ngIf="pokemon?.sprites" class="col-1"></div>
     <div *ngIf="pokemon?.sprites" class="col-auto text-center">
-      <img *ngIf="!showShiny && pokemon.sprites.front_default" [src]="pokemon?.sprites?.front_default" alt="Pokemon image" class="img-thumbnail"
+      <img *ngIf="!showShiny && pokemon?.sprites.front_default" [src]="pokemon?.sprites?.front_default" alt="Pokemon image" class="img-thumbnail"
         style="width: 140px">
-      <img *ngIf="showShiny && pokemon.sprites.front_shiny" [src]="pokemon?.sprites?.front_shiny" alt="Pokemon shiny" class="img-thumbnail"
+      <img *ngIf="showShiny && pokemon?.sprites.front_shiny" [src]="pokemon?.sprites?.front_shiny" alt="Pokemon shiny" class="img-thumbnail"
         style="width: 140px">
     </div>
     <!-- Pokemon types -->
@@ -47,7 +47,7 @@
           <span *ngIf="i !== 0">,</span> {{ability.name | titlecase}}</span>
         <br>
         <p class="mt-5"> <strong>Description:</strong> </p>
-        <div *ngIf="!pokemon.description" class="spinner-border text-danger" role="status">
+        <div *ngIf="!pokemon?.description" class="spinner-border text-danger" role="status">
           <span class="sr-only">Loading...</span>
         </div>
         <p class="text-justify"> {{pokemon?.description}} </p>
@@ -55,7 +55,7 @@
       <!-- Moves -->
       <div *ngIf="options[1].clicked" class="text-justify mt-3 pb-3">
         <strong> Moves </strong>
-        <div *ngIf="pokemon.moves.length === countMoves">
+        <div *ngIf="pokemon?.moves.length === countMoves">
         <span *ngFor="let move of pokemon.moves;">
           <div mdbBtn size="sm" class="col-auto ml-0" mdbWavesEffect (click)="desc.toggle();"> {{move.name | titlecase}} </div>
           <div mdbCollapse #desc>
@@ -67,7 +67,7 @@
         </span>
         </div>
         <div class="w-100"></div>
-        <div *ngIf="pokemon.moves.length !== countMoves" class="spinner-border text-danger" role="status">
+        <div *ngIf="pokemon?.moves.length !== countMoves" class="spinner-border text-danger" role="status">
           <span class="sr-only">Loading...</span>
         </div>
       </div>
