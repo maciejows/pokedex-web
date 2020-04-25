@@ -8,5 +8,5 @@ Zadanie stażowe Summer e-Xperience 2020.
     npm start
 
 ## Dodatkowo
-Działającą aplikację dodatkowo można znaleźć pod adresem:
+Działającą aplikację dodatkowo można znaleźć pod adresem:<br/>
     https://maciejows.github.io/pokedex-web
