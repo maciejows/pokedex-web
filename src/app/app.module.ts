@@ -12,6 +12,11 @@ import { ReversePipe } from './pipes/ReversePipe';
 import { CharToSpacePipe } from './pipes/CharToSpacePipe';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FilterComponent } from './components/filter/filter.component';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +33,13 @@ import { FilterComponent } from './components/filter/filter.component';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    MDBBootstrapModule.forRoot()
+    MDBBootstrapModule.forRoot(),
+    EffectsModule.forFeature([]),
+    StoreModule.forRoot([]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
