@@ -7,5 +7,4 @@ export class Type {
     this.name = properties.type.name;
     this.url = properties.type.url;
   }
-
 }

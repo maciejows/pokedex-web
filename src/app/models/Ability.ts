@@ -9,7 +9,7 @@ export class Ability {
     this.url = properties.ability.url;
   }
 
-  setDescription(desc: string){
+  setDescription(desc: string) {
     this.description = desc;
   }
 }

@@ -15,16 +15,19 @@ export class Pokemon {
   types: Type[] = [];
   description: string;
 
-  constructor(data: any){
+  constructor(data: any) {
     this.id = data.id;
     this.name = data.name;
-    for(let i = 0; i < data.abilities.length; i++){
+    for (let i = 0; i < data.abilities.length; i++) {
       this.abilities.push(new Ability(data.abilities[i]));
     }
     // Get only moves that can be learned by 'level-up'
-    for(let i = 0; i < data.moves.length; i++){
-      for (let j=0; j< data.moves[i].version_group_details.length; j++){
-        if (data.moves[i].version_group_details[j].move_learn_method.name === "level-up") {
+    for (let i = 0; i < data.moves.length; i++) {
+      for (let j = 0; j < data.moves[i].version_group_details.length; j++) {
+        if (
+          data.moves[i].version_group_details[j].move_learn_method.name ===
+          'level-up'
+        ) {
           this.moves.push(new Move(data.moves[i]));
           break;
         }
@@ -32,15 +35,15 @@ export class Pokemon {
     }
     this.sprites = new Sprites(data.sprites);
 
-    for(let i = 0; i < data.stats.length; i++){
+    for (let i = 0; i < data.stats.length; i++) {
       this.stats.push(new Stat(data.stats[i]));
     }
-    for(let i = 0; i < data.types.length; i++){
+    for (let i = 0; i < data.types.length; i++) {
       this.types.push(new Type(data.types[i]));
     }
   }
 
-  setDescription(desc: string){
+  setDescription(desc: string) {
     this.description = desc;
   }
 }
