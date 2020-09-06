@@ -7,6 +7,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,8 @@ import { PokedexDisplayComponent } from './components/pokedex-display/pokedex-di
 import { PokemonListComponent } from './components/pokemon-list/pokemon-list.component';
 import { CharToSpacePipe } from './pipes/CharToSpacePipe';
 import { ReversePipe } from './pipes/ReversePipe';
+import { PageEffects } from './store/page.effects';
+import { pageReducer } from './store/page.reducer';
 
 @NgModule({
   declarations: [
@@ -33,12 +36,13 @@ import { ReversePipe } from './pipes/ReversePipe';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
+    NgxPaginationModule,
     MDBBootstrapModule.forRoot(),
-    EffectsModule.forRoot([]),
-    StoreModule.forRoot([]),
+    EffectsModule.forRoot([PageEffects]),
+    StoreModule.forRoot({ page: pageReducer }),
     StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.production // Restrict extension to log-only mode
+      maxAge: 25,
+      logOnly: environment.production
     })
   ],
   providers: [],

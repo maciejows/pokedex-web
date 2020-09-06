@@ -2,12 +2,12 @@
 // Pokemons displaying at single page with pagination data
 
 export class PokemonPage {
-  count: string;
-  next: string;
-  previous: string;
-  results: { name: string; url: string }[];
+  [name: string]: string;
 
-  constructor(props: any) {
-    Object.assign(this, props);
+  constructor(data: any = {}) {
+    const results = data.results || [];
+    results.forEach((element) => {
+      this[element.name ? element.name : ''] = element.url ? element.url : '';
+    });
   }
 }
