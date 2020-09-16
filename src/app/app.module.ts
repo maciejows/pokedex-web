@@ -16,6 +16,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { PokedexDisplayComponent } from './components/pokedex-display/pokedex-display.component';
 import { PokemonListComponent } from './components/pokemon-list/pokemon-list.component';
 import { CharToSpacePipe } from './pipes/CharToSpacePipe';
+import { CountPagesPipe } from './pipes/CountPagesPipe';
 import { ReversePipe } from './pipes/ReversePipe';
 import { PageEffects } from './store/page.effects';
 import { pageReducer } from './store/page.reducer';
@@ -27,6 +28,7 @@ import { pageReducer } from './store/page.reducer';
     PokemonListComponent,
     ReversePipe,
     CharToSpacePipe,
+    CountPagesPipe,
     NavbarComponent,
     FilterComponent
   ],

@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { PageState } from '../models/PageState';
-import { PokemonPage } from '../models/PokemonPage';
 import { Meta } from '../models/Meta';
+import { PokemonPage } from '../models/PokemonPage';
 
 export const getPage = createAction(
   '[Pokemon Page Service] Get Page',
@@ -14,4 +13,9 @@ export const getPageSuccess = createAction(
 export const getPageError = createAction(
   '[Pokemon Page Service] Get Page',
   props<{ error: string }>()
+);
+
+export const setCurrentPageNumber = createAction(
+  '[Pokemon-list Component] Set current page number',
+  props<{ pageNumber: number }>()
 );

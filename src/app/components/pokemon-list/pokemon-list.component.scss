@@ -1,17 +1,19 @@
 .scrollbar {
-  margin-left: 30px;
+  margin-left: 0;
   float: left;
   height: 300px;
   width: 65px;
   background: #fff;
   overflow-y: scroll;
-  margin-bottom: 25px;
-  }
+  margin-bottom: 10px;
+}
 
-  .force-overflow {
-  min-height: 70vh;
+.force-overflow {
+  min-height: 50vh;
   min-width: 95%;
-  }
+}
+
+$selected-color: #ff5252;
 
 /* You can add global styles to this file, and also import other style files */
 .shiny-toggle {
@@ -20,7 +22,7 @@
 }
 
 .selected-pokemon {
-  background-color: #ff5252;
+  background-color: $selected-color;
   color: white;
 }
 
@@ -38,6 +40,53 @@
   margin: 0;
 }
 
+.dropdown-menu {
+  margin-top: 11px;
+  padding: 0;
+  min-width: 0;
+  background-color: inherit;
+  border: 0;
+}
+
+.dropdown-toggle {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0;
+  height: 50px;
+  width: 70px;
+  font-size: 0.9rem !important;
+}
+
+.dropdown-toggle::after {
+  border: 0;
+  content: none;
+}
+
+.list-group-item:first-child{
+  border-radius: 0;
+  margin-top: 1px;
+  border-top: none;
+}
+
+.page-list {
+  height: 50px;
+  font-size: 0.9rem;
+}
+
+.btn.btn-md {
+  padding: .7rem 1.8rem 1rem 1.3rem
+}
+
+.btn.btn-md .fas {
+  position: absolute;
+  right: 0.8rem;
+  top: 1.05rem;
+}
+
+div[role="status"]{
+  height: 3.5rem;
+  width: 3.5rem;
+}
+
   .scrollbar-danger::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
     background-color: #F5F5F5;
@@ -51,3 +100,35 @@
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
     background-color: #ff3547; }
+
+    .scrollbar-page {
+      margin-left: 0;
+      float: left;
+      height: 20px;
+      width: 5px;
+      background: #fff;
+      overflow-y: scroll;
+      margin-bottom: 10px;
+    }
+    
+    .force-overflow-page {
+      min-height: 14vh;
+      min-width: 100%;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0;
+      margin-top: 14px;
+    }
+
+    .scrollbar-danger-page::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+      background-color: #F5F5F5;
+      border-radius: 10px; }
+  
+      .scrollbar-danger-page::-webkit-scrollbar {
+      width: 6px;
+      background-color: #F5F5F5; }
+  
+      .scrollbar-danger-page::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+      background-color: #ff3547; }

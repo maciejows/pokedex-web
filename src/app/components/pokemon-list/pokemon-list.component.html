@@ -2,41 +2,54 @@
   <div class="col-12">
     <!-- Pokemon list -->
     <mdb-card class="force-overflow scrollbar scrollbar-danger">
-      <ul class="list-group list-group-flush md-pills" *ngIf="(currentPokemonPage$ | async) as currentPokemonPage">
-        <a type="submit" class="list-group-item" mdbWavesEffect *ngFor="let pokemon of currentPokemonPage | keyvalue | paginate: 
-          {itemsPerPage: 20,
-          currentPage: currentPageNumber,
-          totalItems: 1050 }" [class.selected-pokemon]="pokemon.key === selectedPokemon" [ngClass]="{'selected-pokemon text-white': pokemon.key === selectedPokemon,
+      <ul class="list-group list-group-flush"
+        *ngIf="(currentPokemonPage$ | async) as currentPokemonPage; else loadingList">
+        <a type="submit" class="list-group-item" mdbWavesEffect
+          *ngFor="let pokemon of currentPokemonPage | keyvalue: originalOrder"
+          [class.selected-pokemon]="pokemon.key === selectedPokemon" [ngClass]="{'selected-pokemon text-white': pokemon.key === selectedPokemon,
            'text-dark': pokemon.key !== selectedPokemon}" [routerLink]="['/pokemon', pokemon.name]">
           {{pokemon?.key | titlecase | space}}
         </a>
       </ul>
+      <ng-template #loadingList>
+        <div class="spinner-border text-danger text-center my-auto mx-auto" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </ng-template>
     </mdb-card>
   </div>
-  <!-- Pagination labels -->
+  <!-- Pagination -->
   <div class="col-12">
     <nav>
-      <!--
-      <ul class="pagination pg-red pagination-md justify-content-center">
-        <li class="page-item" (click)="previousPage()">
-          <a class="page-link" aria-label="Previous" mdbWavesEffect>
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
+      <div class="row justify-content-center">
+        <div class="col text-right my-auto">
+          <a disabled aria-label="previous" (click)="changePage(5)">
+            <mdb-icon fas size="lg" icon="angle-left"></mdb-icon>
           </a>
-        </li>
-        <li *ngFor="let page of pageArray" class="page-item" [class.active]="selectedPage === page  " (click)="selectPage(page)"><a class="page-link" mdbWavesEffect>{{page}}</a></li>
-        <li class="page-item" (click)="nextPage()">
-          <a class="page-link" aria-label="Next" mdbWavesEffect>
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
+        </div>
+        <div class="col-4 col-md-3 col-lg-5 text-center">
+          <div class="btn-group dropdown" mdbDropdown>
+            <button mdbDropdownToggle type="button" mdbBtn size="md" class="dropdown-toggle z-depth-0" mdbWavesEffect>
+              {{currentPage}} <mdb-icon fas icon="angle-down"></mdb-icon>
+            </button>
+            <!-- Page dropdown -->
+            <div class="dropdown-menu force-overflow-page scrollbar-page scrollbar-danger-page">
+              <ul class="rmpm list-group-flush">
+                <a *ngFor="let page of meta.count | countPages: meta.limit" (click)="changePage(page)"
+                  class="list-group-item text-center page-list"
+                  [style]="(currentPage === page)? 'font-weight: 400;' : 'font-weight: 300'">
+                  {{page}}
+                </a>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col text-left my-auto">
+          <a aria-label="next">
+            <mdb-icon fas size="lg" icon="angle-right"></mdb-icon>
           </a>
-        </li>
-      </ul>
-    -->
-      <pagination-controls directionLinks="true" autoHide="true" previousLabel="" nextLabel="" maxSize="5"
-        (pageChange)="switchPage($event);" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
-        screenReaderCurrentLabel="You're on page" class="my-pagination text-center">
-      </pagination-controls>
+        </div>
+      </div>
     </nav>
   </div>
 </div>

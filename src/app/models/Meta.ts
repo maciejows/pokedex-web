@@ -1,5 +1,7 @@
 export class Meta {
   count: number;
+  offset: number;
+  limit: number;
   next: string;
   previous: string;
 
@@ -7,5 +9,7 @@ export class Meta {
     this.count = data.count ? data.count : null;
     this.next = data.next ? data.next : '';
     this.previous = data.previous ? data.previous : '';
+    this.offset = 0;
+    this.limit = 50;
   }
 }
