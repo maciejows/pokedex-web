@@ -7,6 +7,7 @@ import { Meta } from 'src/app/models/Meta';
 import { PageState } from 'src/app/models/PageState';
 import { PokemonPage } from '../../models/PokemonPage';
 import { getPage, setCurrentPageNumber } from '../../store/page.actions';
+import { PokemonDataService } from 'src/app/services/pokemon-data.service';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -22,7 +23,8 @@ export class PokemonListComponent implements OnInit {
 
   constructor(
     private store: Store<{ page: PageState }>,
-    private router: Router
+    private router: Router,
+    private dataService: PokemonDataService
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +55,10 @@ export class PokemonListComponent implements OnInit {
     this.metaSub = this.store
       .select((state) => state.page.meta)
       .subscribe((meta) => (this.meta = meta));
+  
+    this.dataService.pokemonContent$.subscribe(
+      data => this.selectedPokemon = data
+    )
   }
 
   getPage(pageNumber?: number, url?: string): void {}
@@ -63,6 +69,13 @@ export class PokemonListComponent implements OnInit {
       queryParamsHandling: 'merge'
     });
     this.store.dispatch(setCurrentPageNumber({ pageNumber: event }));
+  }
+
+  changePokemon(event: string): void {
+    this.router.navigate(['pokemons'], {
+      queryParams: { name: event },
+      queryParamsHandling: 'merge'
+    });
   }
   // KeyValuePipe preserve property sorting
   originalOrder(
