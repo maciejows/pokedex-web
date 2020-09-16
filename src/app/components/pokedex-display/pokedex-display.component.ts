@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PokemonDataService } from '../../services/pokemon-data.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Pokemon } from '../../models/Pokemon';
+import { PokemonDataService } from '../../services/pokemon-data.service';
 
 @Component({
   selector: 'app-pokedex-display',
@@ -44,18 +44,12 @@ export class PokedexDisplayComponent implements OnInit {
   countMoves = 0;
   constructor(
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private dataService: PokemonDataService
   ) {}
 
   ngOnInit(): void {
     //TODO Preserve wrong param type
-    this.activatedRoute.url.subscribe((param) => {
-      const name = param[1].path;
-      this.countMoves = 0;
-      this.getPokemon(name);
-      this.dataService.sharePokemonName(name);
-      this.getMovesOfAllTypes();
-    });
   }
   // Fetch pokemon, if already fetched get static version
   getPokemon(name: string) {
