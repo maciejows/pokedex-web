@@ -49,8 +49,21 @@ export class PokedexDisplayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //TODO Preserve wrong param type
-  }
+    this.activatedRoute.queryParams.subscribe((param) => {
+      const name = param['name'];
+      if (name) {
+        this.countMoves = 0;
+        this.getPokemon(name);
+        this.dataService.sharePokemonName(name);
+        this.getMovesOfAllTypes();
+      } else {
+        this.router.navigate(['pokemons'], {
+          queryParams: { name: 'bulbasaur' },
+          queryParamsHandling: 'merge'
+        });
+    }
+    });
+}
   // Fetch pokemon, if already fetched get static version
   getPokemon(name: string) {
     if (this.dataService.PokemonList[name]) {
