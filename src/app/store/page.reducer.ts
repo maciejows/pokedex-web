@@ -1,6 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { PageState } from '../models/PageState';
 import {
+  clearPages, getFilteredPokemonsSuccess,
   getPageError,
   getPageSuccess,
   setCurrentPageNumber
@@ -30,7 +31,13 @@ const _pageReducer = createReducer(
   on(setCurrentPageNumber, (state, { pageNumber }) => ({
     ...state,
     currentPage: pageNumber
-  }))
+  })),
+  on(getFilteredPokemonsSuccess, (state, { pages, meta }) => ({
+    ...state,
+    meta: meta,
+    pages: pages
+  })),
+  on(clearPages, (state) => ({ ...state, pages: {} }))
 );
 
 export function pageReducer(state: PageState, action: Action): PageState {

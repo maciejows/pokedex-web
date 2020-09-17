@@ -17,26 +17,7 @@ export class PokedexDisplayComponent implements OnInit {
     { option: 'stats', clicked: false }
   ];
   // Maping type to color
-  typesMap: { [key: string]: string } = {
-    normal: '#A8A878',
-    fire: '#F08030',
-    fighting: '#C03028',
-    water: '#6890F0',
-    flying: '#A890F0',
-    grass: '#78C850',
-    poison: '#A040A0',
-    electric: '#F8D030',
-    ground: '#E0C068',
-    psychic: '#F85888',
-    rock: '#B8A038',
-    ice: '#98D8D8',
-    bug: '#A8B820',
-    dragon: '#7038F8',
-    ghost: '#705898',
-    dark: '#705848',
-    steel: '#B8B8D0',
-    fairy: '#EE99AC'
-  };
+  typesMap = {};
   // Maping move's name to description
   movesMap: { [key: string]: string }[] = [];
   // Maping move's name to move Type (ex. poison)
@@ -45,32 +26,33 @@ export class PokedexDisplayComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private dataService: PokemonDataService
+    private pokemonDataService: PokemonDataService
   ) {}
 
   ngOnInit(): void {
+    this.typesMap = this.pokemonDataService.typesMap;
     this.activatedRoute.queryParams.subscribe((param) => {
       const name = param['name'];
       if (name) {
         this.countMoves = 0;
         this.getPokemon(name);
-        this.dataService.sharePokemonName(name);
+        this.pokemonDataService.sharePokemonName(name);
         this.getMovesOfAllTypes();
       } else {
         this.router.navigate(['pokemons'], {
           queryParams: { name: 'bulbasaur' },
           queryParamsHandling: 'merge'
         });
-    }
+      }
     });
-}
+  }
   // Fetch pokemon, if already fetched get static version
   getPokemon(name: string) {
-    if (this.dataService.PokemonList[name]) {
-      this.pokemon = this.dataService.getSinglePokemonDataStatic(name);
+    if (this.pokemonDataService.PokemonList[name]) {
+      this.pokemon = this.pokemonDataService.getSinglePokemonDataStatic(name);
       this.getMovesDescriptions();
     } else
-      this.dataService.getSinglePokemonData(name).subscribe((data) => {
+      this.pokemonDataService.getSinglePokemonData(name).subscribe((data) => {
         this.pokemon = data;
         this.getPokemonSpecie(name);
         this.getMovesDescriptions();
@@ -84,10 +66,10 @@ export class PokedexDisplayComponent implements OnInit {
   }
   // Get list of moves of specific Type (ex. Poison), if already fetched get static version
   getMovesOfSingleType(type: string) {
-    if (Object.keys(this.dataService.moveTypeMap).length !== 0) {
-      this.moveTypeMap = this.dataService.getMovesPerTypeStatic();
+    if (Object.keys(this.pokemonDataService.moveTypeMap).length !== 0) {
+      this.moveTypeMap = this.pokemonDataService.getMovesPerTypeStatic();
     } else
-      this.dataService.getMovesPerType(type).subscribe((data) => {
+      this.pokemonDataService.getMovesPerType(type).subscribe((data) => {
         for (let i = 0; i < data.moves.length; i++) {
           this.moveTypeMap[data.moves[i].name] = data.name;
         }
@@ -99,11 +81,11 @@ export class PokedexDisplayComponent implements OnInit {
     const index = name.search('-');
     if (name !== 'nidoran-f' && name !== 'nidoran-m' && index !== -1)
       specie = name.slice(0, index);
-    this.dataService.getPokemonSpecie(specie).subscribe((data) => {
+    this.pokemonDataService.getPokemonSpecie(specie).subscribe((data) => {
       for (let i = 0; i < data.flavor_text_entries.length; i++) {
         if (data.flavor_text_entries[i].language.name === 'en') {
           this.pokemon.setDescription(data.flavor_text_entries[i].flavor_text);
-          this.dataService.setPokemonDescription(
+          this.pokemonDataService.setPokemonDescription(
             name,
             data.flavor_text_entries[i].flavor_text
           );
@@ -114,11 +96,13 @@ export class PokedexDisplayComponent implements OnInit {
   }
   // Get move's description
   getMoveDescription(name: string) {
-    if (this.dataService.moveList[name]) {
-      this.movesMap[name] = this.dataService.getMoveDescriptionStatic(name);
+    if (this.pokemonDataService.moveList[name]) {
+      this.movesMap[name] = this.pokemonDataService.getMoveDescriptionStatic(
+        name
+      );
       this.countMoves++;
     } else
-      this.dataService.getMoveDescription(name).subscribe((data) => {
+      this.pokemonDataService.getMoveDescription(name).subscribe((data) => {
         this.movesMap[data.name] = data.desc;
         this.countMoves++;
       });

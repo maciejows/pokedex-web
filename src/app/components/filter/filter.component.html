@@ -25,9 +25,9 @@
                       </div>
                     </li>
                     <!-- Create type option for every pokemon Type -->
-                    <li *ngFor="let pokemonType of typeKeys" class="dropdown-item" (click)="selectTypeOption(pokemonType);" >
-                      <div [style.background-color]="typesMap[pokemonType]" class="text-white badge text-wrap" style="width: 4rem;">
-                        {{pokemonType | titlecase}}
+                    <li *ngFor="let pokemonType of typesMap | keyvalue" class="dropdown-item" (click)="selectTypeOption(pokemonType.key);" >
+                      <div [style.background-color]="typesMap[pokemonType.key]" class="text-white badge text-wrap" style="width: 4.5rem;">
+                        {{pokemonType.key | titlecase}}
                       </div>
                     </li>
                   </ul>

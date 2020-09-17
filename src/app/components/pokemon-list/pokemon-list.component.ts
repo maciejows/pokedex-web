@@ -55,10 +55,10 @@ export class PokemonListComponent implements OnInit {
     this.metaSub = this.store
       .select((state) => state.page.meta)
       .subscribe((meta) => (this.meta = meta));
-  
+
     this.dataService.pokemonContent$.subscribe(
-      data => this.selectedPokemon = data
-    )
+      (data) => (this.selectedPokemon = data)
+    );
   }
 
   getPage(pageNumber?: number, url?: string): void {}
