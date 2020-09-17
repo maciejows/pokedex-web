@@ -5,9 +5,9 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { Meta } from 'src/app/models/Meta';
 import { PageState } from 'src/app/models/PageState';
+import { PokemonDataService } from 'src/app/services/pokemon-data.service';
 import { PokemonPage } from '../../models/PokemonPage';
 import { getPage, setCurrentPageNumber } from '../../store/page.actions';
-import { PokemonDataService } from 'src/app/services/pokemon-data.service';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -60,8 +60,6 @@ export class PokemonListComponent implements OnInit {
       (data) => (this.selectedPokemon = data)
     );
   }
-
-  getPage(pageNumber?: number, url?: string): void {}
 
   changePage(event: number): void {
     this.router.navigate(['pokemons'], {
