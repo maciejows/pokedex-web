@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PageService {
-  apiUrl = 'https://pokeapi.co/api/v2/pokemon';
+  apiUrl = 'https://pokeapi.co/api/v2';
   limit = 50;
 
   constructor(private http: HttpClient) {}
@@ -14,9 +14,13 @@ export class PageService {
   getPage(pageNumber: number): Observable<any> {
     console.log('Calling for page: ' + pageNumber);
     return this.http.get(
-      `${this.apiUrl}?offset=${this.limit * (pageNumber - 1)}&limit=${
+      `${this.apiUrl}/pokemon?offset=${this.limit * (pageNumber - 1)}&limit=${
         this.limit
       }`
     );
+  }
+
+  getFilteredPokemons(type: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/type/${type}`);
   }
 }

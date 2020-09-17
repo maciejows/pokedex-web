@@ -7,6 +7,7 @@ export class Meta {
 
   constructor(data: any = {}) {
     this.count = data.count ? data.count : null;
+    data.pokemon ? (this.count = data.pokemon.length) : null;
     this.next = data.next ? data.next : '';
     this.previous = data.previous ? data.previous : '';
     this.offset = 0;

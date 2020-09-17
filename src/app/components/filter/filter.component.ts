@@ -1,4 +1,14 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { PageState } from 'src/app/models/PageState';
+import { PokemonDataService } from '../../services/pokemon-data.service';
+import {
+  clearPages,
+  getFilteredPokemons,
+  getPage,
+  setCurrentPageNumber
+} from '../../store/page.actions';
 
 @Component({
   selector: 'app-filter',
@@ -6,50 +16,37 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
-  @Output() filter = new EventEmitter();
-
-  typesMap: { [key: string]: string } = {
-    normal: '#A8A878',
-    fire: '#F08030',
-    fighting: '#C03028',
-    water: '#6890F0',
-    flying: '#A890F0',
-    grass: '#78C850',
-    poison: '#A040A0',
-    electric: '#F8D030',
-    ground: '#E0C068',
-    psychic: '#F85888',
-    rock: '#B8A038',
-    ice: '#98D8D8',
-    bug: '#A8B820',
-    dragon: '#7038F8',
-    ghost: '#705898',
-    dark: '#705848',
-    steel: '#B8B8D0',
-    fairy: '#EE99AC'
-  };
-  typeKeys: string[] = [];
+  typesMap = {};
   selectedTypeOption = '';
   pokemonName = '';
-  constructor() {}
+  constructor(
+    private store: Store<{ page: PageState }>,
+    private router: Router,
+    private pokemonDataService: PokemonDataService
+  ) {}
 
-  getFilteredPage() {
-    this.pokemonName = this.pokemonName.toLowerCase();
-    if (this.pokemonName !== '') {
-      this.selectedTypeOption = '';
+  getFilteredPage(): void {
+    this.router.navigate(['pokemons'], {
+      queryParams: { page: 1 },
+      queryParamsHandling: 'merge'
+    });
+    this.store.dispatch(setCurrentPageNumber({ pageNumber: 1 }));
+
+    if (this.selectedTypeOption === '') {
+      this.store.dispatch(clearPages());
+      this.store.dispatch(getPage({ page: 1 }));
+    } else {
+      this.store.dispatch(
+        getFilteredPokemons({ pokemonType: this.selectedTypeOption })
+      );
     }
-    this.filter.emit(null);
-    this.pokemonName = '';
   }
 
-  selectTypeOption(type: string) {
+  selectTypeOption(type: string): void {
     this.selectedTypeOption = type;
   }
 
   ngOnInit(): void {
-    // Getting pokemon Type names
-    for (const element of Object.keys(this.typesMap)) {
-      this.typeKeys.push(element);
-    }
+    this.typesMap = this.pokemonDataService.typesMap;
   }
 }

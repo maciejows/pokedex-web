@@ -12,8 +12,15 @@ import {
 import { Meta } from '../models/Meta';
 import { PageState } from '../models/PageState';
 import { PokemonPage } from '../models/PokemonPage';
+import { PokemonPages } from '../models/PokemonPages';
 import { PageService } from '../services/page.service';
-import { getPage, getPageError, getPageSuccess } from './page.actions';
+import {
+  getFilteredPokemons,
+  getFilteredPokemonsSuccess,
+  getPage,
+  getPageError,
+  getPageSuccess
+} from './page.actions';
 
 @Injectable()
 export class PageEffects {
@@ -32,6 +39,24 @@ export class PageEffects {
             })
           ),
           catchError((error) => of(getPageError({ error })))
+        )
+      )
+    )
+  );
+
+  getPokemonsOfType$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getFilteredPokemons),
+      switchMap((action) =>
+        this.pageService.getFilteredPokemons(action.pokemonType).pipe(
+          map(
+            (data) =>
+              getFilteredPokemonsSuccess({
+                pages: new PokemonPages(data),
+                meta: new Meta(data)
+              }),
+            catchError((error) => of(getPageError({ error })))
+          )
         )
       )
     )
