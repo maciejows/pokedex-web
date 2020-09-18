@@ -46,11 +46,9 @@ export class PokemonDataService {
     this.pokemonSource.next(name);
   }
   // Get pokemon data from server
-  getSinglePokemonData(name: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/pokemon/${name}`).pipe(
-      map((data) => new Pokemon(data)),
-      tap((data) => (this.PokemonList[data.name] = data))
-    );
+  getPokemonData(name: string): Observable<any> {
+    console.log('heer');
+    return this.http.get(`${this.apiUrl}/pokemon/${name}`);
   }
   // Get pokemon data from local service
   getSinglePokemonDataStatic(name: string): Pokemon {

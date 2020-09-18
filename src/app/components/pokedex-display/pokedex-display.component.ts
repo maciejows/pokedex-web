@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Pokemon } from '@models/Pokemon';
-import { PokemonDataService } from '@services/pokemon-data.service';
+import { PokemonState } from '@models/PokemonState';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { getPokemonData } from '@store/pokemon/pokemon.actions';
 
 @Component({
   selector: 'app-pokedex-display',
@@ -10,6 +12,9 @@ import { PokemonDataService } from '@services/pokemon-data.service';
 })
 export class PokedexDisplayComponent implements OnInit {
   pokemon: Pokemon;
+  selectedPokemon: string;
+  selectedPokemonSub: Subscription;
+
   showShiny = false;
   options: { option: string; clicked: boolean }[] = [
     { option: 'info', clicked: true },
@@ -23,26 +28,14 @@ export class PokedexDisplayComponent implements OnInit {
   // Maping move's name to move Type (ex. poison)
   moveTypeMap: { [key: string]: string }[] = [];
   countMoves = 0;
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private pokemonDataService: PokemonDataService
-  ) {}
+  constructor(private store: Store<{ pokemon: PokemonState }>) {}
 
   ngOnInit(): void {
-    this.typesMap = this.pokemonDataService.typesMap;
-    this.activatedRoute.queryParams.subscribe((param) => {
-      const name = param['name'];
-      if (name) {
-        // Dispatch get Pokemon
-        this.pokemonDataService.sharePokemonName(name);
-      } else {
-        this.router.navigate(['pokemons'], {
-          queryParams: { name: 'bulbasaur' },
-          queryParamsHandling: 'merge'
-        });
-      }
-    });
+    this.selectedPokemonSub = this.store
+      .select((state) => state.pokemon.selectedPokemon)
+      .subscribe((pokemon) =>
+        this.store.dispatch(getPokemonData({ pokemonName: pokemon }))
+      );
   }
 
   /* 
