@@ -25,6 +25,10 @@ export class FilterComponent implements OnInit {
     private pokemonDataService: PokemonDataService
   ) {}
 
+  ngOnInit(): void {
+    this.typesMap = this.pokemonDataService.typesMap;
+  }
+
   getFilteredPage(): void {
     this.router.navigate(['pokemons'], {
       queryParams: { page: 1 },
@@ -44,9 +48,5 @@ export class FilterComponent implements OnInit {
 
   selectTypeOption(type: string): void {
     this.selectedTypeOption = type;
-  }
-
-  ngOnInit(): void {
-    this.typesMap = this.pokemonDataService.typesMap;
   }
 }
