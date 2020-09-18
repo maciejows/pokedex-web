@@ -1,7 +1,8 @@
+import { PageState } from '@models/PageState';
 import { Action, createReducer, on } from '@ngrx/store';
-import { PageState } from '../models/PageState';
 import {
-  clearPages, getFilteredPokemonsSuccess,
+  clearPages,
+  getFilteredPokemonsSuccess,
   getPageError,
   getPageSuccess,
   setCurrentPageNumber

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PageState } from '@models/PageState';
 import { Store } from '@ngrx/store';
-import { PageState } from 'src/app/models/PageState';
-import { PokemonDataService } from '../../services/pokemon-data.service';
+import { PokemonDataService } from '@services/pokemon-data.service';
 import {
   clearPages,
   getFilteredPokemons,
   getPage,
   setCurrentPageNumber
-} from '../../store/page.actions';
+} from '@store/page/page.actions';
 
 @Component({
   selector: 'app-filter',

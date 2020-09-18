@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Pokemon } from '../../models/Pokemon';
-import { PokemonDataService } from '../../services/pokemon-data.service';
+import { Pokemon } from '@models/Pokemon';
+import { PokemonDataService } from '@services/pokemon-data.service';
 
 @Component({
   selector: 'app-pokedex-display',
@@ -34,6 +34,23 @@ export class PokedexDisplayComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((param) => {
       const name = param['name'];
       if (name) {
+        // Dispatch get Pokemon
+        this.pokemonDataService.sharePokemonName(name);
+      } else {
+        this.router.navigate(['pokemons'], {
+          queryParams: { name: 'bulbasaur' },
+          queryParamsHandling: 'merge'
+        });
+      }
+    });
+  }
+
+  /* 
+  ngOnInit(): void {
+    this.typesMap = this.pokemonDataService.typesMap;
+    this.activatedRoute.queryParams.subscribe((param) => {
+      const name = param['name'];
+      if (name) {
         this.countMoves = 0;
         this.getPokemon(name);
         this.pokemonDataService.sharePokemonName(name);
@@ -46,6 +63,7 @@ export class PokedexDisplayComponent implements OnInit {
       }
     });
   }
+  
   // Fetch pokemon, if already fetched get static version
   getPokemon(name: string) {
     if (this.pokemonDataService.PokemonList[name]) {
@@ -132,4 +150,5 @@ export class PokedexDisplayComponent implements OnInit {
   getTypeByMove(move: string) {
     return this.moveTypeMap[move];
   }
+  */
 }

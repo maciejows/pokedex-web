@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Meta } from '@models/Meta';
+import { PageState } from '@models/PageState';
+import { PokemonPage } from '@models/PokemonPage';
+import { PokemonPages } from '@models/PokemonPages';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { PageService } from '@services/page.service';
 import { of } from 'rxjs';
 import {
   catchError,
@@ -9,11 +14,6 @@ import {
   switchMap,
   withLatestFrom
 } from 'rxjs/operators';
-import { Meta } from '../models/Meta';
-import { PageState } from '../models/PageState';
-import { PokemonPage } from '../models/PokemonPage';
-import { PokemonPages } from '../models/PokemonPages';
-import { PageService } from '../services/page.service';
 import {
   getFilteredPokemons,
   getFilteredPokemonsSuccess,
