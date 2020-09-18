@@ -1,13 +1,13 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Meta } from '@models/Meta';
+import { PageState } from '@models/PageState';
+import { PokemonPage } from '@models/PokemonPage';
 import { Store } from '@ngrx/store';
+import { PokemonDataService } from '@services/pokemon-data.service';
+import { getPage, setCurrentPageNumber } from '@store/page/page.actions';
 import { Observable, Subscription } from 'rxjs';
-import { Meta } from 'src/app/models/Meta';
-import { PageState } from 'src/app/models/PageState';
-import { PokemonDataService } from 'src/app/services/pokemon-data.service';
-import { PokemonPage } from '../../models/PokemonPage';
-import { getPage, setCurrentPageNumber } from '../../store/page.actions';
 
 @Component({
   selector: 'app-pokemon-list',

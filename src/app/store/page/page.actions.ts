@@ -1,7 +1,7 @@
+import { Meta } from '@models/Meta';
+import { PokemonPage } from '@models/PokemonPage';
+import { PokemonPages } from '@models/PokemonPages';
 import { createAction, props } from '@ngrx/store';
-import { Meta } from '../models/Meta';
-import { PokemonPage } from '../models/PokemonPage';
-import { PokemonPages } from '../models/PokemonPages';
 
 export const getPage = createAction(
   '[Pokemon Page Service] Get Page',

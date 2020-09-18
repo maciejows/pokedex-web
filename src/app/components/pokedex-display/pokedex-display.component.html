@@ -28,14 +28,14 @@
       <span class="sr-only">Loading...</span>
     </div>
     <!-- Toggle shiny button -->
-    <div class="col-12 text-center">
-      <button class="button-rounded" mdbBtn size="sm" type="button" [class.shiny-toggle]="showShiny" mdbWavesEffect (click)="toggleShiny()">Shiny</button>
+    <div class="col-12 text-center"> <!-- (click)="toggleShiny()" -->
+      <button class="button-rounded" mdbBtn size="sm" type="button" [class.shiny-toggle]="showShiny" mdbWavesEffect >Shiny</button>
     </div>
   </div>
   <!-- Display Section -->
   <div class="row justify-content-center mt-4 mb-4">
-    <!-- Options -->
-    <div mdbBtn *ngFor="let option of options" size="sm" class="col-auto" [class.shiny-toggle]="option.clicked"  (click)="selectOption(option.option)">
+    <!-- Options --> <!-- (click)="selectOption(option.option)" -->
+    <div mdbBtn *ngFor="let option of options" size="sm" class="col-auto" [class.shiny-toggle]="option.clicked">
       {{option.option}}
     </div>
 
@@ -59,8 +59,8 @@
         <span *ngFor="let move of pokemon.moves;">
           <div mdbBtn size="sm" class="col-auto ml-0" mdbWavesEffect (click)="desc.toggle();"> {{move.name | titlecase}} </div>
           <div mdbCollapse #desc>
-            <div [style.background-color]="getTypeColorByMove(move.name)" class=" text-white badge text-wrap" style="width: 4rem;">
-              {{getTypeByMove(move.name) | titlecase}}
+            <div  class=" text-white badge text-wrap" style="width: 4rem;"> <!-- [style.background-color]="getTypeColorByMove(move.name)" -->
+               <!-- {{getTypeByMove(move.name) | titlecase}} -->
             </div>
             <p>{{movesMap[move.name]}}</p>
           </div>
