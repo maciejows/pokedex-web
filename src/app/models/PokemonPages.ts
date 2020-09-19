@@ -13,7 +13,6 @@ export class PokemonPages {
     const total = 50;
     for (let i = 0, j = pokemons.length; i < j; i += total) {
       results.results = pokemons.slice(i, i + total);
-      console.log(results);
       this[currentPage] = new PokemonPage(results);
       currentPage++;
     }

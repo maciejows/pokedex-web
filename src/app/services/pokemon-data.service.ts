@@ -47,7 +47,6 @@ export class PokemonDataService {
   }
   // Get pokemon data from server
   getPokemonData(name: string): Observable<any> {
-    console.log('heer');
     return this.http.get(`${this.apiUrl}/pokemon/${name}`);
   }
   // Get pokemon data from local service

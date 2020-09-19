@@ -1,11 +1,14 @@
+import { Type } from '@models/Type';
+
 // Pokemon's moves
 export class Move {
-  id: number;
   name: string;
   url: string;
+  description: string;
+  types: Type[];
 
-  constructor(properties: any) {
-    this.name = properties.move.name;
-    this.url = properties.move.url;
+  constructor(data: any = {}) {
+    this.name = data.name;
+    this.url = data.url;
   }
 }

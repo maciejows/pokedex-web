@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Pokemon } from '@models/Pokemon';
 import { PokemonState } from '@models/PokemonState';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { getPokemonData } from '@store/pokemon/pokemon.actions';
+import { Subscription, Observable } from 'rxjs';
+import { getPokemonData, selectPokemon } from '@store/pokemon/pokemon.actions';
+import { Ability } from '@models/Ability';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pokedex-display',
@@ -11,7 +13,7 @@ import { getPokemonData } from '@store/pokemon/pokemon.actions';
   styleUrls: ['./pokedex-display.component.scss']
 })
 export class PokedexDisplayComponent implements OnInit {
-  pokemon: Pokemon;
+  pokemon$: Observable<Pokemon>;
   selectedPokemon: string;
   selectedPokemonSub: Subscription;
 
@@ -28,14 +30,46 @@ export class PokedexDisplayComponent implements OnInit {
   // Maping move's name to move Type (ex. poison)
   moveTypeMap: { [key: string]: string }[] = [];
   countMoves = 0;
-  constructor(private store: Store<{ pokemon: PokemonState }>) {}
+  constructor(
+    private store: Store<{ pokemon: PokemonState }>,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.getCurrentPokemon();
     this.selectedPokemonSub = this.store
       .select((state) => state.pokemon.selectedPokemon)
       .subscribe((pokemon) =>
         this.store.dispatch(getPokemonData({ pokemonName: pokemon }))
       );
+
+    this.pokemon$ = this.store.select((state) => state.pokemon.pokemon);
+  }
+
+  getCurrentPokemon(): void {
+    const queryParams = new URLSearchParams(location.search);
+    let pokemonName = queryParams.get('name');
+    if (!pokemonName) {
+      pokemonName = 'bulbasaur';
+      this.router.navigate(['pokemons'], {
+        queryParams: { name: pokemonName },
+        queryParamsHandling: 'merge'
+      });
+    }
+    this.store.dispatch(selectPokemon({ pokemonName: pokemonName }));
+  }
+
+  // Toggle between 'Info' , 'Moves', 'Stats'
+  selectOption(selected: string): void {
+    for (let i = 0; i < this.options.length; i++) {
+      if (this.options[i].option === selected) this.options[i].clicked = true;
+      else this.options[i].clicked = false;
+    }
+  }
+
+  // Show shiny version
+  toggleShiny(): void {
+    this.showShiny = !this.showShiny;
   }
 
   /* 
@@ -124,17 +158,7 @@ export class PokedexDisplayComponent implements OnInit {
       this.getMoveDescription(this.pokemon.moves[i].name);
     }
   }
-  // Toggle between 'Info' , 'Moves', 'Stats'
-  selectOption(selected: string): void {
-    for (let i = 0; i < this.options.length; i++) {
-      if (this.options[i].option === selected) this.options[i].clicked = true;
-      else this.options[i].clicked = false;
-    }
-  }
-  // Show shiny version
-  toggleShiny(): void {
-    this.showShiny = !this.showShiny;
-  }
+  
   // Map Move -> Type -> Color (ex. Vine-whip -> "grass": "#78C850")
   getTypeColorByMove(move: string) {
     return this.typesMap[this.moveTypeMap[move]];

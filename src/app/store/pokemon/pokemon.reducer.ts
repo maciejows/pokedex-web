@@ -8,7 +8,20 @@ import {
 
 export const initalState: PokemonState = {
   selectedPokemon: 'bulbasaur',
-  pokemon: undefined
+  pokemon: {
+    abilities: [],
+    description: '',
+    id: null,
+    moves: [],
+    name: '',
+    sprites: {
+      frontDefault: '',
+      frontShiny: ''
+    },
+    stats: [],
+    types: []
+  },
+  error: ''
 };
 
 const _pokemonReducer = createReducer(
@@ -21,7 +34,7 @@ const _pokemonReducer = createReducer(
     ...state,
     pokemon: pokemon
   })),
-  on(getPokemonDataError)
+  on(getPokemonDataError, (state, { error }) => ({ ...state, error: error }))
 );
 
 export function pokemonReducer(

@@ -4,8 +4,8 @@ export class Stat {
   name: string;
   value: number;
 
-  constructor(properties: any) {
-    this.value = properties.base_stat;
-    this.name = properties.stat.name;
+  constructor(data: any = {}) {
+    this.value = data.base_stat || null;
+    this.name = data.stat.name || '';
   }
 }

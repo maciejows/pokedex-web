@@ -6,7 +6,6 @@ import { PageState } from '@models/PageState';
 import { PokemonPage } from '@models/PokemonPage';
 import { PokemonState } from '@models/PokemonState';
 import { Store } from '@ngrx/store';
-import { PokemonDataService } from '@services/pokemon-data.service';
 import { getPage, setCurrentPageNumber } from '@store/page/page.actions';
 import { selectPokemon } from '@store/pokemon/pokemon.actions';
 import { Observable, Subscription } from 'rxjs';
@@ -29,8 +28,7 @@ export class PokemonListComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<{ page: PageState; pokemon: PokemonState }>,
-    private router: Router,
-    private dataService: PokemonDataService
+    private router: Router
   ) {}
 
   ngOnInit(): void {

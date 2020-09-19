@@ -8,6 +8,7 @@ import {
   getPokemonDataError,
   getPokemonDataSuccess
 } from './pokemon.actions';
+import { Pokemon } from '@models/Pokemon';
 
 @Injectable()
 export class PokemonEffects {
@@ -16,9 +17,10 @@ export class PokemonEffects {
       ofType(getPokemonData),
       mergeMap((action) =>
         this.dataService.getPokemonData(action.pokemonName).pipe(
-          tap((pokemon) => console.log(pokemon)),
-          map((pokemon) => getPokemonDataSuccess({ pokemon: pokemon })),
-          catchError((error) => of(getPokemonDataError({ error: error })))
+          map((pokemon) =>
+            getPokemonDataSuccess({ pokemon: new Pokemon(pokemon) })
+          ),
+          catchError((error) => of(getPokemonDataError({ error })))
         )
       )
     )
