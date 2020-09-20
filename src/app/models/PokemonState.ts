@@ -1,7 +1,7 @@
-import { Pokemon } from './Pokemon';
+import { PokemonList } from './PokemonList';
 
 export interface PokemonState {
   selectedPokemon: string;
-  pokemon: Pokemon;
+  pokemons: PokemonList;
   error: string;
 }

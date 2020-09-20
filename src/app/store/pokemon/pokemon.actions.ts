@@ -13,7 +13,7 @@ export const getPokemonData = createAction(
 
 export const getPokemonDataSuccess = createAction(
   '[Pokemon Data Service] Get Pokemon Data Success',
-  props<{ pokemon: Pokemon }>()
+  props<{ pokemon: Pokemon; pokemonName: string }>()
 );
 
 export const getPokemonDataError = createAction(

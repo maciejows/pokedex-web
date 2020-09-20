@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Pokemon } from '@models/Pokemon';
 import { PokemonState } from '@models/PokemonState';
 import { Store } from '@ngrx/store';
-import { Subscription, Observable } from 'rxjs';
 import { getPokemonData, selectPokemon } from '@store/pokemon/pokemon.actions';
-import { Ability } from '@models/Ability';
-import { Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { PokemonDataService } from '@services/pokemon-data.service';
 
 @Component({
   selector: 'app-pokedex-display',
@@ -32,18 +32,23 @@ export class PokedexDisplayComponent implements OnInit {
   countMoves = 0;
   constructor(
     private store: Store<{ pokemon: PokemonState }>,
-    private router: Router
+    private router: Router,
+    private dataService: PokemonDataService
   ) {}
 
   ngOnInit(): void {
+    this.typesMap = this.dataService.typesMap;
     this.getCurrentPokemon();
     this.selectedPokemonSub = this.store
       .select((state) => state.pokemon.selectedPokemon)
-      .subscribe((pokemon) =>
-        this.store.dispatch(getPokemonData({ pokemonName: pokemon }))
-      );
+      .subscribe((pokemon) => {
+        this.selectedPokemon = pokemon;
+        this.store.dispatch(getPokemonData({ pokemonName: pokemon }));
+      });
 
-    this.pokemon$ = this.store.select((state) => state.pokemon.pokemon);
+    this.pokemon$ = this.store.select(
+      (state) => state.pokemon.pokemons[this.selectedPokemon]
+    );
   }
 
   getCurrentPokemon(): void {
