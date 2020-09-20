@@ -7,12 +7,16 @@ import {
   map,
   mergeMap,
   withLatestFrom,
-  filter
+  filter,
+  tap
 } from 'rxjs/operators';
 import {
   getPokemonData,
   getPokemonDataError,
-  getPokemonDataSuccess
+  getPokemonDataSuccess,
+  getPokemonDesc,
+  getPokemonDescSuccess,
+  getPokemonDescError
 } from './pokemon.actions';
 import { Pokemon } from '@models/Pokemon';
 import { PokemonState } from '@models/PokemonState';
@@ -24,7 +28,7 @@ export class PokemonEffects {
     this.actions$.pipe(
       ofType(getPokemonData),
       withLatestFrom(this.store.select((state) => state.pokemon.pokemons)),
-      filter(([action, pokemons]) => !pokemons[action.pokemonName]),
+      filter(([action, pokemons]) => !pokemons[action.pokemonName]?.id),
       mergeMap(([action]) =>
         this.dataService.getPokemonData(action.pokemonName).pipe(
           map((pokemon) =>
@@ -34,6 +38,27 @@ export class PokemonEffects {
             })
           ),
           catchError((error) => of(getPokemonDataError({ error })))
+        )
+      )
+    )
+  );
+
+  loadPokemonDesc$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getPokemonDesc),
+      withLatestFrom(this.store.select((state) => state.pokemon.pokemons)),
+      filter(
+        ([action, pokemons]) => !pokemons[action.pokemonName]?.description
+      ),
+      mergeMap(([action]) =>
+        this.dataService.getPokemonSpecie(action.pokemonName).pipe(
+          map((pokemon) =>
+            getPokemonDescSuccess({
+              desc: Pokemon.makeDescription(pokemon),
+              pokemonName: action.pokemonName
+            })
+          ),
+          catchError((error) => of(getPokemonDescError({ error })))
         )
       )
     )

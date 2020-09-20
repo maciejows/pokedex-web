@@ -38,4 +38,9 @@ export class Pokemon {
     this.types = (data.types || []).map((el) => new Type(el.type)) || [];
     this.description = data.description || '';
   }
+
+  static makeDescription(data: any = {}): string {
+    return data.flavor_text_entries.find((el) => el.language.name === 'en')
+      .flavor_text;
+  }
 }

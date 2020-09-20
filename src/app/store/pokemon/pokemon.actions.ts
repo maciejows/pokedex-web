@@ -20,3 +20,18 @@ export const getPokemonDataError = createAction(
   '[Pokemon Data Service] Get Pokemon Data Error',
   props<{ error: string }>()
 );
+
+export const getPokemonDesc = createAction(
+  '[Pokemon Data Service] Get Pokemon Description',
+  props<{ pokemonName: string }>()
+);
+
+export const getPokemonDescSuccess = createAction(
+  '[Pokemon Data Service] Get Pokemon Description Success',
+  props<{ desc: string; pokemonName: string }>()
+);
+
+export const getPokemonDescError = createAction(
+  '[Pokemon Data Service] Get Pokemon Description Error',
+  props<{ error: string }>()
+);

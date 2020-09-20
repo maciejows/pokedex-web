@@ -3,7 +3,9 @@ import { Action, createReducer, on } from '@ngrx/store';
 import {
   selectPokemon,
   getPokemonDataSuccess,
-  getPokemonDataError
+  getPokemonDataError,
+  getPokemonDescSuccess,
+  getPokemonDescError
 } from './pokemon.actions';
 
 export const initalState: PokemonState = {
@@ -20,9 +22,22 @@ const _pokemonReducer = createReducer(
   })),
   on(getPokemonDataSuccess, (state, { pokemon, pokemonName }) => ({
     ...state,
-    pokemons: { ...state.pokemons, [pokemonName]: pokemon }
+    pokemons: {
+      ...state.pokemons,
+      [pokemonName]: {
+        ...pokemon
+      }
+    }
   })),
-  on(getPokemonDataError, (state, { error }) => ({ ...state, error: error }))
+  on(getPokemonDataError, (state, { error }) => ({ ...state, error: error })),
+  on(getPokemonDescSuccess, (state, { pokemonName, desc }) => ({
+    ...state,
+    pokemons: {
+      ...state.pokemons,
+      [pokemonName]: { ...state.pokemons[pokemonName], description: desc }
+    }
+  })),
+  on(getPokemonDescError, (state, { error }) => ({ ...state, error: error }))
 );
 
 export function pokemonReducer(

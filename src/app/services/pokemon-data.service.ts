@@ -32,31 +32,21 @@ export class PokemonDataService {
     steel: '#B8B8D0',
     fairy: '#EE99AC'
   };
-  // List of already fetched pokemons
-  PokemonList: PokemonList[] = [];
-  // List of already fetched moves
-  moveList: { [key: string]: string }[] = [];
-  // Map of move.name : Type (ex. vine-whip -> grass)
+
   moveTypeMap: { [key: string]: string }[] = [];
   // Emitting current selected pokemon change
-  private pokemonSource = new Subject<string>();
-  pokemonContent$ = this.pokemonSource.asObservable();
 
-  sharePokemonName(name: string): void {
-    this.pokemonSource.next(name);
-  }
   // Get pokemon data from server
   getPokemonData(name: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/pokemon/${name}`);
   }
-  // Get pokemon data from local service
-  getSinglePokemonDataStatic(name: string): Pokemon {
-    return this.PokemonList[name];
-  }
+
   // Get pokemon specie (pokemon description purposes)
   getPokemonSpecie(name: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/pokemon-species/${name}`);
+    return this.http.get(`${this.apiUrl}/pokemon-species/${name}`);
   }
+
+  /* 
   // Get move description from server
   getMoveDescription(name: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/move/${name}`).pipe(
@@ -97,4 +87,5 @@ export class PokemonDataService {
   setPokemonDescription(name: string, desc: string) {
     this.PokemonList[name].setDescription(desc);
   }
+  */
 }

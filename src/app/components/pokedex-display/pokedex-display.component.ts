@@ -3,7 +3,11 @@ import { Router } from '@angular/router';
 import { Pokemon } from '@models/Pokemon';
 import { PokemonState } from '@models/PokemonState';
 import { Store } from '@ngrx/store';
-import { getPokemonData, selectPokemon } from '@store/pokemon/pokemon.actions';
+import {
+  getPokemonData,
+  selectPokemon,
+  getPokemonDesc
+} from '@store/pokemon/pokemon.actions';
 import { Observable, Subscription } from 'rxjs';
 import { PokemonDataService } from '@services/pokemon-data.service';
 
@@ -44,6 +48,7 @@ export class PokedexDisplayComponent implements OnInit {
       .subscribe((pokemon) => {
         this.selectedPokemon = pokemon;
         this.store.dispatch(getPokemonData({ pokemonName: pokemon }));
+        this.store.dispatch(getPokemonDesc({ pokemonName: pokemon }));
       });
 
     this.pokemon$ = this.store.select(

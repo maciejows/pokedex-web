@@ -6,15 +6,15 @@
     </div>
     <!-- If image not provided -->
     <div class="col-12 my-1 text-center">
-      <p *ngIf="pokemon.sprites.frontDefault === '' && !showShiny"> Pokemon image not provided :( </p>
-      <p *ngIf="pokemon.sprites.frontShiny === '' && showShiny"> Shiny pokemon image not provided :( </p>
+      <p *ngIf="pokemon?.sprites?.frontDefault === '' && !showShiny"> Pokemon image not provided :( </p>
+      <p *ngIf="pokemon?.sprites?.frontShiny === '' && showShiny"> Shiny pokemon image not provided :( </p>
     </div>
     <!-- Pokemon Img -->
     <div *ngIf="pokemon?.sprites" class="col-1"></div>
     <div *ngIf="pokemon?.sprites" class="col-auto text-center">
-      <img *ngIf="!showShiny && pokemon?.sprites.frontDefault" [src]="pokemon?.sprites?.frontDefault" alt="Pokemon image" class="img-thumbnail"
+      <img *ngIf="!showShiny && pokemon?.sprites?.frontDefault" [src]="pokemon?.sprites?.frontDefault" alt="Pokemon image" class="img-thumbnail"
         style="width: 140px">
-      <img *ngIf="showShiny && pokemon?.sprites.frontShiny" [src]="pokemon?.sprites?.frontShiny" alt="Pokemon shiny" class="img-thumbnail"
+      <img *ngIf="showShiny && pokemon?.sprites?.frontShiny" [src]="pokemon?.sprites?.frontShiny" alt="Pokemon shiny" class="img-thumbnail"
         style="width: 140px">
     </div>
     <!-- Pokemon types -->
