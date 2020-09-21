@@ -1,5 +1,6 @@
 import { Pokemon } from '@models/Pokemon';
 import { createAction, props } from '@ngrx/store';
+import { Move } from '@models/Move';
 
 export const selectPokemon = createAction(
   '[Pokemon List Component] Select Pokemon',
@@ -33,5 +34,20 @@ export const getPokemonDescSuccess = createAction(
 
 export const getPokemonDescError = createAction(
   '[Pokemon Data Service] Get Pokemon Description Error',
+  props<{ error: string }>()
+);
+
+export const getMoveDetails = createAction(
+  '[Pokemon Data Service] Get Move Details',
+  props<{ url: string; moveName: string }>()
+);
+
+export const getMoveDetailsSuccess = createAction(
+  '[Pokemon Data Service] Get Move Details Success',
+  props<{ move: Move; moveName: string }>()
+);
+
+export const getMoveDetailsError = createAction(
+  '[Pokemon Data Service] Get Move Details Error',
   props<{ error: string }>()
 );

@@ -46,6 +46,10 @@ export class PokemonDataService {
     return this.http.get(`${this.apiUrl}/pokemon-species/${name}`);
   }
 
+  getMoveDetails(url: string): Observable<any> {
+    return this.http.get(url);
+  }
+
   /* 
   // Get move description from server
   getMoveDescription(name: string): Observable<any> {

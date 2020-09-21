@@ -16,11 +16,15 @@ import {
   getPokemonDataSuccess,
   getPokemonDesc,
   getPokemonDescSuccess,
-  getPokemonDescError
+  getPokemonDescError,
+  getMoveDetails,
+  getMoveDetailsSuccess,
+  getMoveDetailsError
 } from './pokemon.actions';
 import { Pokemon } from '@models/Pokemon';
 import { PokemonState } from '@models/PokemonState';
 import { Store } from '@ngrx/store';
+import { Move } from '@models/Move';
 
 @Injectable()
 export class PokemonEffects {
@@ -59,6 +63,25 @@ export class PokemonEffects {
             })
           ),
           catchError((error) => of(getPokemonDescError({ error })))
+        )
+      )
+    )
+  );
+
+  getMoveDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getMoveDetails),
+      withLatestFrom(this.store.select((state) => state.pokemon.moves)),
+      filter(([action, moves]) => !moves[action.moveName]),
+      mergeMap(([action]) =>
+        this.dataService.getMoveDetails(action.url).pipe(
+          map((move) =>
+            getMoveDetailsSuccess({
+              move: new Move({ ...move, url: action.url }),
+              moveName: action.moveName
+            })
+          ),
+          catchError((error) => of(getMoveDetailsError({ error })))
         )
       )
     )

@@ -5,12 +5,15 @@ import {
   getPokemonDataSuccess,
   getPokemonDataError,
   getPokemonDescSuccess,
-  getPokemonDescError
+  getPokemonDescError,
+  getMoveDetailsSuccess,
+  getMoveDetailsError
 } from './pokemon.actions';
 
 export const initalState: PokemonState = {
   selectedPokemon: 'bulbasaur',
   pokemons: {},
+  moves: {},
   error: ''
 };
 
@@ -37,7 +40,11 @@ const _pokemonReducer = createReducer(
       [pokemonName]: { ...state.pokemons[pokemonName], description: desc }
     }
   })),
-  on(getPokemonDescError, (state, { error }) => ({ ...state, error: error }))
+  on(getMoveDetailsSuccess, (state, { move, moveName }) => ({
+    ...state,
+    moves: { ...state.moves, [moveName]: move }
+  })),
+  on(getMoveDetailsError, (state, { error }) => ({ ...state, error: error }))
 );
 
 export function pokemonReducer(

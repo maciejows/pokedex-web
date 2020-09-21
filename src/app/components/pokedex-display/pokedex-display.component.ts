@@ -6,10 +6,12 @@ import { Store } from '@ngrx/store';
 import {
   getPokemonData,
   selectPokemon,
-  getPokemonDesc
+  getPokemonDesc,
+  getMoveDetails
 } from '@store/pokemon/pokemon.actions';
 import { Observable, Subscription } from 'rxjs';
 import { PokemonDataService } from '@services/pokemon-data.service';
+import { MoveList } from '@models/MoveList';
 
 @Component({
   selector: 'app-pokedex-display',
@@ -20,6 +22,7 @@ export class PokedexDisplayComponent implements OnInit {
   pokemon$: Observable<Pokemon>;
   selectedPokemon: string;
   selectedPokemonSub: Subscription;
+  moves$: Observable<MoveList>;
 
   showShiny = false;
   options: { option: string; clicked: boolean }[] = [
@@ -42,7 +45,7 @@ export class PokedexDisplayComponent implements OnInit {
 
   ngOnInit(): void {
     this.typesMap = this.dataService.typesMap;
-    this.getCurrentPokemon();
+    this.setCurrentPokemon();
     this.selectedPokemonSub = this.store
       .select((state) => state.pokemon.selectedPokemon)
       .subscribe((pokemon) => {
@@ -54,9 +57,11 @@ export class PokedexDisplayComponent implements OnInit {
     this.pokemon$ = this.store.select(
       (state) => state.pokemon.pokemons[this.selectedPokemon]
     );
+
+    this.moves$ = this.store.select((state) => state.pokemon.moves);
   }
 
-  getCurrentPokemon(): void {
+  setCurrentPokemon(): void {
     const queryParams = new URLSearchParams(location.search);
     let pokemonName = queryParams.get('name');
     if (!pokemonName) {
@@ -77,9 +82,12 @@ export class PokedexDisplayComponent implements OnInit {
     }
   }
 
-  // Show shiny version
   toggleShiny(): void {
     this.showShiny = !this.showShiny;
+  }
+
+  getMoveDetails(url: string, moveName: string): void {
+    this.store.dispatch(getMoveDetails({ url: url, moveName: moveName }));
   }
 
   /* 
