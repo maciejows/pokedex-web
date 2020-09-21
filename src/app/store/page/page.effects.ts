@@ -29,7 +29,7 @@ export class PageEffects {
       ofType(getPage),
       withLatestFrom(this.store.select((state) => state.page.pages)),
       filter(([action, pages]) => !pages[action.page]),
-      switchMap(([action, pages]) =>
+      switchMap(([action]) =>
         this.pageService.getPage(action.page).pipe(
           map((data) =>
             getPageSuccess({

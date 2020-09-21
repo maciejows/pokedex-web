@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { Meta } from '@models/Meta';
 import { PageState } from '@models/PageState';
 import { PokemonPage } from '@models/PokemonPage';
+import { PokemonState } from '@models/PokemonState';
 import { Store } from '@ngrx/store';
-import { PokemonDataService } from '@services/pokemon-data.service';
 import { getPage, setCurrentPageNumber } from '@store/page/page.actions';
+import { selectPokemon } from '@store/pokemon/pokemon.actions';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({
@@ -16,18 +17,18 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class PokemonListComponent implements OnInit, OnDestroy {
   currentPokemonPage$: Observable<PokemonPage>;
-  selectedPokemon = 'bulbasaur';
+  selectedPokemon: string;
   currentPage: number;
   meta: Meta;
 
+  selectedPokemonSub: Subscription;
   metaSub: Subscription;
   pokemonSub: Subscription;
   currentPageSub: Subscription;
 
   constructor(
-    private store: Store<{ page: PageState }>,
-    private router: Router,
-    private dataService: PokemonDataService
+    private store: Store<{ page: PageState; pokemon: PokemonState }>,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +40,7 @@ export class PokemonListComponent implements OnInit, OnDestroy {
     this.metaSub.unsubscribe();
     this.pokemonSub.unsubscribe();
     this.currentPageSub.unsubscribe();
+    this.selectedPokemonSub.unsubscribe();
   }
 
   getCurrentPage(): void {
@@ -73,9 +75,9 @@ export class PokemonListComponent implements OnInit, OnDestroy {
       .select((state) => state.page.meta)
       .subscribe((meta) => (this.meta = meta));
 
-    this.pokemonSub = this.dataService.pokemonContent$.subscribe(
-      (data) => (this.selectedPokemon = data)
-    );
+    this.selectedPokemonSub = this.store
+      .select((state) => state.pokemon.selectedPokemon)
+      .subscribe((pokemon) => (this.selectedPokemon = pokemon));
   }
 
   changePage(event: number): void {
@@ -91,6 +93,7 @@ export class PokemonListComponent implements OnInit, OnDestroy {
       queryParams: { name: event },
       queryParamsHandling: 'merge'
     });
+    this.store.dispatch(selectPokemon({ pokemonName: event }));
   }
   // KeyValuePipe preserve property sorting
   originalOrder(
