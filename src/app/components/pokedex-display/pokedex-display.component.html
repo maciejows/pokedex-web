@@ -1,4 +1,4 @@
-<div class="container-fluid z-depth-1">
+<div *ngIf="(pokemon$ | async) as pokemon" class="container-fluid z-depth-1">
   <div class="row justify-content-center">
     <!-- Pokemon name -->
     <div class="col-12 mt-2 mb-2 text-center">
@@ -6,15 +6,15 @@
     </div>
     <!-- If image not provided -->
     <div class="col-12 my-1 text-center">
-      <p *ngIf="!pokemon?.sprites.front_default && !showShiny"> Pokemon image not provided :( </p>
-      <p *ngIf="!pokemon?.sprites.front_shiny && showShiny"> Shiny pokemon image not provided :( </p>
+      <p *ngIf="pokemon?.sprites?.frontDefault === '' && !showShiny"> Pokemon image not provided :( </p>
+      <p *ngIf="pokemon?.sprites?.frontShiny === '' && showShiny"> Shiny pokemon image not provided :( </p>
     </div>
     <!-- Pokemon Img -->
     <div *ngIf="pokemon?.sprites" class="col-1"></div>
     <div *ngIf="pokemon?.sprites" class="col-auto text-center">
-      <img *ngIf="!showShiny && pokemon?.sprites.front_default" [src]="pokemon?.sprites?.front_default" alt="Pokemon image" class="img-thumbnail"
+      <img *ngIf="!showShiny && pokemon?.sprites?.frontDefault" [src]="pokemon?.sprites?.frontDefault" alt="Pokemon image" class="img-thumbnail"
         style="width: 140px">
-      <img *ngIf="showShiny && pokemon?.sprites.front_shiny" [src]="pokemon?.sprites?.front_shiny" alt="Pokemon shiny" class="img-thumbnail"
+      <img *ngIf="showShiny && pokemon?.sprites?.frontShiny" [src]="pokemon?.sprites?.frontShiny" alt="Pokemon shiny" class="img-thumbnail"
         style="width: 140px">
     </div>
     <!-- Pokemon types -->
@@ -28,14 +28,14 @@
       <span class="sr-only">Loading...</span>
     </div>
     <!-- Toggle shiny button -->
-    <div class="col-12 text-center">
-      <button class="button-rounded" mdbBtn size="sm" type="button" [class.shiny-toggle]="showShiny" mdbWavesEffect (click)="toggleShiny()">Shiny</button>
+    <div class="col-12 text-center"> 
+      <button class="button-rounded" mdbBtn size="sm" type="button" [class.shiny-toggle]="showShiny" (click)="toggleShiny()" mdbWavesEffect >Shiny</button>
     </div>
   </div>
   <!-- Display Section -->
   <div class="row justify-content-center mt-4 mb-4">
     <!-- Options -->
-    <div mdbBtn *ngFor="let option of options" size="sm" class="col-auto" [class.shiny-toggle]="option.clicked"  (click)="selectOption(option.option)">
+    <div mdbBtn *ngFor="let option of options" size="sm" class="col-auto" (click)="selectOption(option.option)" [class.shiny-toggle]="option.clicked">
       {{option.option}}
     </div>
 
@@ -54,22 +54,18 @@
       </div>
       <!-- Moves -->
       <div *ngIf="options[1].clicked" class="text-justify mt-3 pb-3">
-        <strong> Moves </strong>
-        <div *ngIf="pokemon?.moves.length === countMoves">
         <span *ngFor="let move of pokemon.moves;">
-          <div mdbBtn size="sm" class="col-auto ml-0" mdbWavesEffect (click)="desc.toggle();"> {{move.name | titlecase}} </div>
+          <div mdbBtn size="sm" class="col-auto ml-0" mdbWavesEffect (click)="desc.toggle(); getMoveDetails(move.url, move.name)"> {{move.name | titlecase}} </div>
           <div mdbCollapse #desc>
-            <div [style.background-color]="getTypeColorByMove(move.name)" class=" text-white badge text-wrap" style="width: 4rem;">
-              {{getTypeByMove(move.name) | titlecase}}
-            </div>
-            <p>{{movesMap[move.name]}}</p>
+            <div *ngIf="(moves$ | async) as pokemonMove">
+              <div class=" text-white badge text-wrap" style="width: 4rem;" [style.background-color]="typesMap[pokemonMove[move.name]?.type]">
+                {{pokemonMove[move.name]?.type}}
+              </div>
+              <p> {{pokemonMove[move.name]?.description}}</p>
+          </div>
           </div>
         </span>
-        </div>
         <div class="w-100"></div>
-        <div *ngIf="pokemon?.moves.length !== countMoves" class="spinner-border text-danger" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
       </div>
       <!-- Stats -->
       <div *ngIf="options[2].clicked" class="text-justify mt-3 pb-3">

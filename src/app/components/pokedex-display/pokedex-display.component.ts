@@ -1,7 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Pokemon } from '../../models/Pokemon';
-import { PokemonDataService } from '../../services/pokemon-data.service';
+import { Router } from '@angular/router';
+import { Pokemon } from '@models/Pokemon';
+import { PokemonState } from '@models/PokemonState';
+import { Store } from '@ngrx/store';
+import {
+  getPokemonData,
+  selectPokemon,
+  getPokemonDesc,
+  getMoveDetails
+} from '@store/pokemon/pokemon.actions';
+import { Observable, Subscription } from 'rxjs';
+import { PokemonDataService } from '@services/pokemon-data.service';
+import { MoveList } from '@models/MoveList';
 
 @Component({
   selector: 'app-pokedex-display',
@@ -9,7 +19,11 @@ import { PokemonDataService } from '../../services/pokemon-data.service';
   styleUrls: ['./pokedex-display.component.scss']
 })
 export class PokedexDisplayComponent implements OnInit {
-  pokemon: Pokemon;
+  pokemon$: Observable<Pokemon>;
+  selectedPokemon: string;
+  selectedPokemonSub: Subscription;
+  moves$: Observable<MoveList>;
+
   showShiny = false;
   options: { option: string; clicked: boolean }[] = [
     { option: 'info', clicked: true },
@@ -24,11 +38,59 @@ export class PokedexDisplayComponent implements OnInit {
   moveTypeMap: { [key: string]: string }[] = [];
   countMoves = 0;
   constructor(
-    private activatedRoute: ActivatedRoute,
+    private store: Store<{ pokemon: PokemonState }>,
     private router: Router,
-    private pokemonDataService: PokemonDataService
+    private dataService: PokemonDataService
   ) {}
 
+  ngOnInit(): void {
+    this.typesMap = this.dataService.typesMap;
+    this.setCurrentPokemon();
+    this.selectedPokemonSub = this.store
+      .select((state) => state.pokemon.selectedPokemon)
+      .subscribe((pokemon) => {
+        this.selectedPokemon = pokemon;
+        this.store.dispatch(getPokemonData({ pokemonName: pokemon }));
+        this.store.dispatch(getPokemonDesc({ pokemonName: pokemon }));
+      });
+
+    this.pokemon$ = this.store.select(
+      (state) => state.pokemon.pokemons[this.selectedPokemon]
+    );
+
+    this.moves$ = this.store.select((state) => state.pokemon.moves);
+  }
+
+  setCurrentPokemon(): void {
+    const queryParams = new URLSearchParams(location.search);
+    let pokemonName = queryParams.get('name');
+    if (!pokemonName) {
+      pokemonName = 'bulbasaur';
+      this.router.navigate(['pokemons'], {
+        queryParams: { name: pokemonName },
+        queryParamsHandling: 'merge'
+      });
+    }
+    this.store.dispatch(selectPokemon({ pokemonName: pokemonName }));
+  }
+
+  // Toggle between 'Info' , 'Moves', 'Stats'
+  selectOption(selected: string): void {
+    for (let i = 0; i < this.options.length; i++) {
+      if (this.options[i].option === selected) this.options[i].clicked = true;
+      else this.options[i].clicked = false;
+    }
+  }
+
+  toggleShiny(): void {
+    this.showShiny = !this.showShiny;
+  }
+
+  getMoveDetails(url: string, moveName: string): void {
+    this.store.dispatch(getMoveDetails({ url: url, moveName: moveName }));
+  }
+
+  /* 
   ngOnInit(): void {
     this.typesMap = this.pokemonDataService.typesMap;
     this.activatedRoute.queryParams.subscribe((param) => {
@@ -46,6 +108,7 @@ export class PokedexDisplayComponent implements OnInit {
       }
     });
   }
+  
   // Fetch pokemon, if already fetched get static version
   getPokemon(name: string) {
     if (this.pokemonDataService.PokemonList[name]) {
@@ -113,17 +176,7 @@ export class PokedexDisplayComponent implements OnInit {
       this.getMoveDescription(this.pokemon.moves[i].name);
     }
   }
-  // Toggle between 'Info' , 'Moves', 'Stats'
-  selectOption(selected: string): void {
-    for (let i = 0; i < this.options.length; i++) {
-      if (this.options[i].option === selected) this.options[i].clicked = true;
-      else this.options[i].clicked = false;
-    }
-  }
-  // Show shiny version
-  toggleShiny(): void {
-    this.showShiny = !this.showShiny;
-  }
+  
   // Map Move -> Type -> Color (ex. Vine-whip -> "grass": "#78C850")
   getTypeColorByMove(move: string) {
     return this.typesMap[this.moveTypeMap[move]];
@@ -132,4 +185,5 @@ export class PokedexDisplayComponent implements OnInit {
   getTypeByMove(move: string) {
     return this.moveTypeMap[move];
   }
+  */
 }
