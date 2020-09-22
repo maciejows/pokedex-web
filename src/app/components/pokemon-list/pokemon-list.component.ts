@@ -21,10 +21,10 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   currentPage: number;
   meta: Meta;
 
-  selectedPokemonSub: Subscription;
-  metaSub: Subscription;
   pokemonSub: Subscription;
+  selectedPokemonSub: Subscription;
   currentPageSub: Subscription;
+  metaSub: Subscription;
 
   constructor(
     private store: Store<{ page: PageState; pokemon: PokemonState }>,
