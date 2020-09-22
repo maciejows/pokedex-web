@@ -23,7 +23,7 @@
     <nav>
       <div class="row justify-content-center">
         <div class="col text-right my-auto">
-          <a disabled aria-label="previous" (click)="changePage(5)">
+          <a aria-label="previous" (click)="changePage(currentPage-1)">
             <mdb-icon fas size="lg" icon="angle-left"></mdb-icon>
           </a>
         </div>
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="col text-left my-auto">
-          <a aria-label="next">
+          <a aria-label="next" (click)="changePage(currentPage+1)">
             <mdb-icon fas size="lg" icon="angle-right"></mdb-icon>
           </a>
         </div>
