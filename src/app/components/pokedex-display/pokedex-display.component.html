@@ -69,7 +69,7 @@
       </div>
       <!-- Stats -->
       <div *ngIf="options[2].clicked" class="text-justify mt-3 pb-3">
-        <div *ngFor="let stat of pokemon.stats | reverse"> <strong>{{stat.name | titlecase}}</strong> : {{stat.value}}</div>
+        <div *ngFor="let stat of pokemon.stats"> <strong>{{stat.name | titlecase}}</strong> : {{stat.value}}</div>
       </div>
     </div>
   </div>

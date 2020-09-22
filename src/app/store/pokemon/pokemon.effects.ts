@@ -7,8 +7,7 @@ import {
   map,
   mergeMap,
   withLatestFrom,
-  filter,
-  tap
+  filter
 } from 'rxjs/operators';
 import {
   getPokemonData,
