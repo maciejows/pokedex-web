@@ -34,8 +34,12 @@ export class PokemonDataService {
   // Emitting current selected pokemon change
 
   // Get pokemon data from server
-  getPokemonData(name: string): Observable<any> {
+  getPokemonData(name?: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/pokemon/${name}`);
+  }
+
+  getPokemonList(limit: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/pokemon/?limit=${limit}`);
   }
 
   // Get pokemon specie (pokemon description purposes)

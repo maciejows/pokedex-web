@@ -15,6 +15,8 @@ import { CountPagesPipe } from '@pipes/CountPagesPipe';
 import { PageEffects } from '@store/page/page.effects';
 import { PokemonEffects } from '@store/pokemon/pokemon.effects';
 import { pageReducer } from '@store/page/page.reducer';
+import { filterReducer } from '@store/filter/filter.reducer';
+import { FilterEffects } from '@store/filter/filter.effects';
 import { pokemonReducer } from '@store/pokemon/pokemon.reducer';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -40,8 +42,12 @@ import { AppComponent } from './app.component';
     FormsModule,
     NgxPaginationModule,
     MDBBootstrapModule.forRoot(),
-    EffectsModule.forRoot([PageEffects, PokemonEffects]),
-    StoreModule.forRoot({ page: pageReducer, pokemon: pokemonReducer }),
+    EffectsModule.forRoot([PageEffects, PokemonEffects, FilterEffects]),
+    StoreModule.forRoot({
+      page: pageReducer,
+      pokemon: pokemonReducer,
+      filter: filterReducer
+    }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production

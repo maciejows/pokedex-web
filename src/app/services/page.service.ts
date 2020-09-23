@@ -12,7 +12,6 @@ export class PageService {
   constructor(private http: HttpClient) {}
 
   getPage(pageNumber: number): Observable<any> {
-    console.log('Calling for page: ' + pageNumber);
     return this.http.get(
       `${this.apiUrl}/pokemon?offset=${this.limit * (pageNumber - 1)}&limit=${
         this.limit
