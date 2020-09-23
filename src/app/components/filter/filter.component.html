@@ -5,9 +5,14 @@
         <div class="col-md-12 col-lg-9">
           <div class="form-group rmpm row justify-content-center">
             <div class="col-auto my-auto">
-              <!-- Pokemon nam input -->
+              <!-- Pokemon name input -->
               <div class="md-form">
-                <input mdbInput  type="text" class="form-control " id="nameInput" placeholder="Pokemon name" [(ngModel)]="pokemonName">
+                <input mdbInput #pokemonNameInput type="text" class="form-control" id="pokemonNameInput" placeholder="Pokemon name" (input)="search(pokemonNameInput.value)">
+                <ul *ngIf="(pokemonsFound$ | async) as pokemonsFound" class="list-group w-100 list-group-flush">
+                  <li *ngFor="let pokemonName of pokemonsFound" class="list-group-item" (click)="changePokemon(pokemonName); pokemonNameInput.value=''">
+                    {{pokemonName | titlecase}}
+                  </li>
+                </ul>
               </div>
             </div>
             <div class="col-auto my-auto">

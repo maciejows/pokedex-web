@@ -9,9 +9,11 @@ import {
   getPage,
   setCurrentPageNumber
 } from '@store/page/page.actions';
-import { Subscription } from 'rxjs';
+import { selectPokemon } from '@store/pokemon/pokemon.actions';
+import { Subscription, Observable, of, Subject } from 'rxjs';
 import { getPokemonList } from '@store/filter/filter.actions';
 import { FilterState } from '@models/FilterState';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-filter',
@@ -24,6 +26,8 @@ export class FilterComponent implements OnInit, OnDestroy {
   pokemonName = '';
   pokemonList: string[];
 
+  searchTerms = new Subject<string>();
+  pokemonsFound$: Observable<string[]>;
   pokemonListSub: Subscription;
   metaSub: Subscription;
 
@@ -36,6 +40,33 @@ export class FilterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.typesMap = this.pokemonDataService.typesMap;
     this.initStoreSubscriptions();
+    this.pokemonsFound$ = this.searchTerms.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      switchMap((term: string) => this.searchTerm(term))
+    );
+  }
+
+  search(term: string): void {
+    term.toLowerCase();
+    this.searchTerms.next(term);
+  }
+
+  searchTerm(term: string): Observable<string[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+    const result = this.pokemonList.filter((el) => el.includes(term));
+    return of(result.slice(0, 10));
+  }
+
+  changePokemon(event: string): void {
+    this.router.navigate(['pokemons'], {
+      queryParams: { name: event },
+      queryParamsHandling: 'merge'
+    });
+    this.store.dispatch(selectPokemon({ pokemonName: event }));
+    this.searchTerms.next('');
   }
 
   initStoreSubscriptions(): void {
@@ -50,7 +81,9 @@ export class FilterComponent implements OnInit, OnDestroy {
 
     this.pokemonListSub = this.store
       .select((state) => state.filter.pokemonNames)
-      .subscribe((names) => (this.pokemonList = names));
+      .subscribe((names) => {
+        this.pokemonList = names;
+      });
   }
 
   ngOnDestroy(): void {
