@@ -20,11 +20,12 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   selectedPokemon: string;
   currentPage: number;
   meta: Meta;
+  totalPages = 0;
 
-  selectedPokemonSub: Subscription;
-  metaSub: Subscription;
   pokemonSub: Subscription;
+  selectedPokemonSub: Subscription;
   currentPageSub: Subscription;
+  metaSub: Subscription;
 
   constructor(
     private store: Store<{ page: PageState; pokemon: PokemonState }>,
@@ -73,14 +74,23 @@ export class PokemonListComponent implements OnInit, OnDestroy {
 
     this.metaSub = this.store
       .select((state) => state.page.meta)
-      .subscribe((meta) => (this.meta = meta));
+      .subscribe((meta) => {
+        if (meta.count > 0)
+          this.totalPages = this.countPages(meta.count, meta.limit);
+        this.meta = meta;
+      });
 
     this.selectedPokemonSub = this.store
       .select((state) => state.pokemon.selectedPokemon)
       .subscribe((pokemon) => (this.selectedPokemon = pokemon));
   }
 
+  countPages(total: number, divider: number): number {
+    return Math.ceil(total / divider);
+  }
+
   changePage(event: number): void {
+    if (event <= 0 || event > this.totalPages) return;
     this.router.navigate(['pokemons'], {
       queryParams: { page: event },
       queryParamsHandling: 'merge'

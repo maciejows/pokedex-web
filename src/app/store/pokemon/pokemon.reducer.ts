@@ -28,7 +28,8 @@ const _pokemonReducer = createReducer(
     pokemons: {
       ...state.pokemons,
       [pokemonName]: {
-        ...pokemon
+        ...pokemon,
+        description: state.pokemons[pokemonName]?.description
       }
     }
   })),

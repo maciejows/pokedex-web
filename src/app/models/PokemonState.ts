@@ -1,9 +1,9 @@
-import { PokemonList } from './PokemonList';
 import { MoveList } from './MoveList';
+import { PokemonPages } from './PokemonPages';
 
 export interface PokemonState {
   selectedPokemon: string;
-  pokemons: PokemonList;
+  pokemons: PokemonPages;
   moves: MoveList;
   error: string;
 }

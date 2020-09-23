@@ -24,7 +24,7 @@ export const getPokemonDataError = createAction(
 
 export const getPokemonDesc = createAction(
   '[Pokemon Data Service] Get Pokemon Description',
-  props<{ pokemonName: string }>()
+  props<{ pokemonName: string; url: string }>()
 );
 
 export const getPokemonDescSuccess = createAction(

@@ -12,7 +12,6 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CharToSpacePipe } from '@pipes/CharToSpacePipe';
 import { CountPagesPipe } from '@pipes/CountPagesPipe';
-import { ReversePipe } from '@pipes/ReversePipe';
 import { PageEffects } from '@store/page/page.effects';
 import { PokemonEffects } from '@store/pokemon/pokemon.effects';
 import { pageReducer } from '@store/page/page.reducer';
@@ -28,7 +27,6 @@ import { AppComponent } from './app.component';
     AppComponent,
     PokedexDisplayComponent,
     PokemonListComponent,
-    ReversePipe,
     CharToSpacePipe,
     CountPagesPipe,
     NavbarComponent,
