@@ -10,6 +10,7 @@ export class Pokemon {
   name: string;
   abilities: Ability[];
   sprites: Sprites;
+  specieUrl: string;
   moves: Move[];
   stats: Stat[];
   types: Type[];
@@ -18,6 +19,7 @@ export class Pokemon {
   constructor(data: any = {}) {
     this.id = data.id || null;
     this.name = data.name || '';
+    this.specieUrl = data.species.url || '';
     this.abilities = (data.abilities || []).map(
       (el) => new Ability(el.ability)
     );

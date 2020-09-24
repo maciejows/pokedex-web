@@ -3,6 +3,15 @@
   margin: 0;
 }
 
+.spy{
+  background-color: red;
+
+}
+
+.spy2{
+  background-color: blue;
+}
+
 .shiny-toggle {
   border: 1px solid red;
   color: red;
@@ -14,5 +23,15 @@
 }
 
 .dropdown-item {
+  cursor: pointer;
+}
+
+.list-group-flush {
+  position: absolute;
+  z-index: 2;
+}
+
+.list-group-item {
+  opacity: 85%;
   cursor: pointer;
 }

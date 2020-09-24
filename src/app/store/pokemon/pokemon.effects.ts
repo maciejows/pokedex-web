@@ -7,8 +7,7 @@ import {
   map,
   mergeMap,
   withLatestFrom,
-  filter,
-  tap
+  filter
 } from 'rxjs/operators';
 import {
   getPokemonData,
@@ -55,7 +54,7 @@ export class PokemonEffects {
         ([action, pokemons]) => !pokemons[action.pokemonName]?.description
       ),
       mergeMap(([action]) =>
-        this.dataService.getPokemonSpecie(action.pokemonName).pipe(
+        this.dataService.getPokemonSpecie(action.url).pipe(
           map((pokemon) =>
             getPokemonDescSuccess({
               desc: Pokemon.makeDescription(pokemon),

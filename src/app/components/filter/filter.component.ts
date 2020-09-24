@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { PageState } from '@models/PageState';
 import { Store } from '@ngrx/store';
@@ -9,24 +9,86 @@ import {
   getPage,
   setCurrentPageNumber
 } from '@store/page/page.actions';
+import { selectPokemon } from '@store/pokemon/pokemon.actions';
+import { Subscription, Observable, of, Subject } from 'rxjs';
+import { getPokemonList } from '@store/filter/filter.actions';
+import { FilterState } from '@models/FilterState';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, OnDestroy {
   typesMap = {};
   selectedTypeOption = '';
   pokemonName = '';
+  pokemonList: string[];
+
+  searchTerms = new Subject<string>();
+  pokemonsFound$: Observable<string[]>;
+  pokemonListSub: Subscription;
+  metaSub: Subscription;
+
   constructor(
-    private store: Store<{ page: PageState }>,
+    private store: Store<{ page: PageState; filter: FilterState }>,
     private router: Router,
     private pokemonDataService: PokemonDataService
   ) {}
 
   ngOnInit(): void {
     this.typesMap = this.pokemonDataService.typesMap;
+    this.initStoreSubscriptions();
+    this.pokemonsFound$ = this.searchTerms.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      switchMap((term: string) => this.searchTerm(term))
+    );
+  }
+
+  search(term: string): void {
+    term.toLowerCase();
+    this.searchTerms.next(term);
+  }
+
+  searchTerm(term: string): Observable<string[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+    const result = this.pokemonList.filter((el) => el.includes(term));
+    return of(result.slice(0, 10));
+  }
+
+  changePokemon(event: string): void {
+    this.router.navigate(['pokemons'], {
+      queryParams: { name: event },
+      queryParamsHandling: 'merge'
+    });
+    this.store.dispatch(selectPokemon({ pokemonName: event }));
+    this.searchTerms.next('');
+  }
+
+  initStoreSubscriptions(): void {
+    this.metaSub = this.store
+      .select((state) => state.page.meta)
+      .subscribe((meta) => {
+        if (meta.count > 0) {
+          this.store.dispatch(getPokemonList({ limit: meta.count }));
+          this.metaSub.unsubscribe();
+        }
+      });
+
+    this.pokemonListSub = this.store
+      .select((state) => state.filter.pokemonNames)
+      .subscribe((names) => {
+        this.pokemonList = names;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.metaSub.unsubscribe();
+    this.pokemonListSub.unsubscribe();
   }
 
   getFilteredPage(): void {
