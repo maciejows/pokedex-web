@@ -8,13 +8,26 @@
   border-radius: 25px;
 }
 
-.spy {
-  background-color: peachpuff;
-}
-
-.spy2 {
+.border {
   border: 1px solid grey;
   border-radius: 5px;
+}
+
+.container-fluid {
+  min-height: 50vh;
+}
+
+.spinner-medium {
+  height: 3.5rem;
+  width: 3.5rem;
+}
+
+.spinner-center {
+  min-height: inherit;
+}
+
+.mh-50{
+  min-height: 50vh;
 }
 
 .rmpm {
