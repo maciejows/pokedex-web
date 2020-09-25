@@ -18,7 +18,7 @@
       </div>
       <!-- Pokemon types -->
       <div *ngIf="pokemon?.types" class="col-1 rmpm">
-        <div *ngFor="let type of pokemon?.types" [style.background-color]="typesMap[type.name]" class=" text-white badge text-wrap" style="width: 4rem;">
+        <div *ngFor="let type of pokemon?.types" [style.background-color]="typesMap[type.name]" class=" text-white badge text-wrap" style="width: 4.5rem;">
           {{type.name | titlecase}}
         </div>
       </div>
