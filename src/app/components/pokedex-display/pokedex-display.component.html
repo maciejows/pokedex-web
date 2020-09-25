@@ -12,11 +12,9 @@
       </div>
       <!-- Pokemon Img -->
       <div *ngIf="pokemon?.sprites" class="col-1"></div>
-      <div *ngIf="pokemon?.sprites" class="col-auto text-center">
-        <img *ngIf="!showShiny && pokemon?.sprites?.frontDefault" [src]="pokemon?.sprites?.frontDefault" alt="Pokemon image" class="img-thumbnail"
-          style="width: 140px">
-        <img *ngIf="showShiny && pokemon?.sprites?.frontShiny" [src]="pokemon?.sprites?.frontShiny" alt="Pokemon shiny" class="img-thumbnail"
-          style="width: 140px">
+      <div  class="col-auto text-center" style="height: 140px;">
+        <img [hidden]="showShiny" [src]="pokemon?.sprites?.frontDefault" alt="Pokemon image" class="img-thumbnail">
+        <img [hidden]="!showShiny" [src]="pokemon?.sprites?.frontShiny" alt="Pokemon shiny" class="img-thumbnail">
       </div>
       <!-- Pokemon types -->
       <div *ngIf="pokemon?.types" class="col-1 rmpm">
@@ -30,7 +28,7 @@
       </div>
       <!-- Toggle shiny button -->
       <div class="col-12 text-center"> 
-        <button class="button-rounded" mdbBtn size="sm" type="button" [class.shiny-toggle]="showShiny" (click)="toggleShiny()" mdbWavesEffect >Shiny</button>
+        <button class="button-rounded" id="shiny-button" mdbBtn size="sm" type="button" [class.shiny-toggle]="showShiny" (click)="toggleShiny()" mdbWavesEffect >Shiny</button>
       </div>
     </div>
     <!-- Display Section -->
