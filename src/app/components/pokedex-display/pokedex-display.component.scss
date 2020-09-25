@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+#shiny-button {
+  border: 1px solid rgba(255,255,255,0);
+}
+
 .shiny-toggle {
-  border: 1px solid red;
+  border: 1px solid rgba(255,0,0,1) !important;
   color: red;
 }
 
@@ -8,13 +12,39 @@
   border-radius: 25px;
 }
 
-.spy {
-  background-color: peachpuff;
-}
-
-.spy2 {
+.border {
   border: 1px solid grey;
   border-radius: 5px;
+}
+
+.container-fluid {
+  min-height: 50vh;
+}
+
+.spinner-medium {
+  height: 3.5rem;
+  width: 3.5rem;
+}
+
+.card {
+  font-weight: 300;
+}
+
+.spy {
+  background-color: red;
+}
+
+.img-thumbnail {
+  width: 140px;
+  height: inherit;
+}
+
+.spinner-center {
+  min-height: inherit;
+}
+
+.mh-50{
+  min-height: 50vh;
 }
 
 .rmpm {
