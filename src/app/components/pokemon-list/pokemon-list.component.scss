@@ -10,7 +10,7 @@
 
 .force-overflow {
   min-height: 50vh;
-  min-width: 95%;
+  min-width: 100%;
 }
 
 $selected-color: #ff5252;
@@ -24,15 +24,6 @@ $selected-color: #ff5252;
 .selected-pokemon {
   background-color: $selected-color;
   color: white;
-}
-
-.spy {
-  background-color: peachpuff;
-}
-
-.spy2 {
-  border: 1px solid grey;
-  border-radius: 5px;
 }
 
 .rmpm {
@@ -87,48 +78,48 @@ div[role="status"]{
   width: 3.5rem;
 }
 
-  .scrollbar-danger::-webkit-scrollbar-track {
+.scrollbar-danger::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #F5F5F5;
+  border-radius: 10px; }
+
+  .scrollbar-danger::-webkit-scrollbar {
+  width: 12px;
+  background-color: #F5F5F5; }
+
+  .scrollbar-danger::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #ff3547; }
+
+  .scrollbar-page {
+    margin-left: 0;
+    float: left;
+    height: 20px;
+    width: 5px;
+    background: #fff;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+  }
+  
+  .force-overflow-page {
+    min-height: 14vh;
+    min-width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0;
+    margin-top: 14px;
+  }
+
+  .scrollbar-danger-page::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
     background-color: #F5F5F5;
     border-radius: 10px; }
 
-    .scrollbar-danger::-webkit-scrollbar {
-    width: 12px;
+    .scrollbar-danger-page::-webkit-scrollbar {
+    width: 6px;
     background-color: #F5F5F5; }
 
-    .scrollbar-danger::-webkit-scrollbar-thumb {
+    .scrollbar-danger-page::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
     background-color: #ff3547; }
-
-    .scrollbar-page {
-      margin-left: 0;
-      float: left;
-      height: 20px;
-      width: 5px;
-      background: #fff;
-      overflow-y: scroll;
-      margin-bottom: 10px;
-    }
-    
-    .force-overflow-page {
-      min-height: 14vh;
-      min-width: 100%;
-      border: 1px solid rgba(0, 0, 0, 0.125);
-      border-radius: 0;
-      margin-top: 14px;
-    }
-
-    .scrollbar-danger-page::-webkit-scrollbar-track {
-      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-      background-color: #F5F5F5;
-      border-radius: 10px; }
-  
-      .scrollbar-danger-page::-webkit-scrollbar {
-      width: 6px;
-      background-color: #F5F5F5; }
-  
-      .scrollbar-danger-page::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-      background-color: #ff3547; }

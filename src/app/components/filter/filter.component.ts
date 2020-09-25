@@ -47,6 +47,11 @@ export class FilterComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngOnDestroy(): void {
+    this.metaSub.unsubscribe();
+    this.pokemonListSub.unsubscribe();
+  }
+
   search(term: string): void {
     term.toLowerCase();
     this.searchTerms.next(term);
@@ -86,29 +91,22 @@ export class FilterComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
-    this.metaSub.unsubscribe();
-    this.pokemonListSub.unsubscribe();
-  }
+  getFilteredPage(type: string): void {
+    this.selectedTypeOption = type;
 
-  getFilteredPage(): void {
     this.router.navigate(['pokemons'], {
       queryParams: { page: 1 },
       queryParamsHandling: 'merge'
     });
     this.store.dispatch(setCurrentPageNumber({ pageNumber: 1 }));
+    this.store.dispatch(clearPages());
 
     if (this.selectedTypeOption === '') {
-      this.store.dispatch(clearPages());
       this.store.dispatch(getPage({ page: 1 }));
     } else {
       this.store.dispatch(
         getFilteredPokemons({ pokemonType: this.selectedTypeOption })
       );
     }
-  }
-
-  selectTypeOption(type: string): void {
-    this.selectedTypeOption = type;
   }
 }
