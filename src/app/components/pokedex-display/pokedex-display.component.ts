@@ -5,6 +5,7 @@ import { Pokemon } from '@models/Pokemon';
 import { PokemonState } from '@models/PokemonState';
 import { Store } from '@ngrx/store';
 import { PokemonDataService } from '@services/pokemon-data.service';
+import { RoutingService } from '@services/routing.service';
 import {
   getMoveDetails,
   getPokemonData,
@@ -37,7 +38,7 @@ export class PokedexDisplayComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<{ pokemon: PokemonState }>,
-    private router: Router,
+    private routingService: RoutingService,
     private dataService: PokemonDataService
   ) {}
 
@@ -57,10 +58,7 @@ export class PokedexDisplayComponent implements OnInit, OnDestroy {
     let pokemonName = queryParams.get('name');
     if (!pokemonName) {
       pokemonName = 'bulbasaur';
-      this.router.navigate(['pokemons'], {
-        queryParams: { name: pokemonName },
-        queryParamsHandling: 'merge'
-      });
+      this.routingService.navigateWithParams({ name: pokemonName });
     }
     this.store.dispatch(selectPokemon({ pokemonName: pokemonName }));
   }

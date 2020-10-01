@@ -14,6 +14,7 @@ import { Subscription, Observable, of, Subject } from 'rxjs';
 import { getPokemonList } from '@store/filter/filter.actions';
 import { FilterState } from '@models/FilterState';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { RoutingService } from '@services/routing.service';
 
 @Component({
   selector: 'app-filter',
@@ -33,7 +34,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<{ page: PageState; filter: FilterState }>,
-    private router: Router,
+    private routingService: RoutingService,
     private pokemonDataService: PokemonDataService
   ) {}
 
@@ -66,10 +67,8 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   changePokemon(event: string): void {
-    this.router.navigate(['pokemons'], {
-      queryParams: { name: event },
-      queryParamsHandling: 'merge'
-    });
+    this.routingService.navigateWithParams({ name: event });
+
     this.store.dispatch(selectPokemon({ pokemonName: event }));
     this.searchTerms.next('');
   }
@@ -93,11 +92,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   getFilteredPage(type: string): void {
     this.selectedTypeOption = type;
-
-    this.router.navigate(['pokemons'], {
-      queryParams: { page: 1 },
-      queryParamsHandling: 'merge'
-    });
+    this.routingService.navigateWithParams({ page: 1 });
     this.store.dispatch(setCurrentPageNumber({ pageNumber: 1 }));
     this.store.dispatch(clearPages());
 

@@ -6,6 +6,7 @@ import { PageState } from '@models/PageState';
 import { PokemonPage } from '@models/PokemonPage';
 import { PokemonState } from '@models/PokemonState';
 import { Store } from '@ngrx/store';
+import { RoutingService } from '@services/routing.service';
 import { getPage, setCurrentPageNumber } from '@store/page/page.actions';
 import { selectPokemon } from '@store/pokemon/pokemon.actions';
 import { Observable, Subscription } from 'rxjs';
@@ -29,7 +30,7 @@ export class PokemonListComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<{ page: PageState; pokemon: PokemonState }>,
-    private router: Router
+    private routingService: RoutingService
   ) {}
 
   ngOnInit(): void {
@@ -52,10 +53,7 @@ export class PokemonListComponent implements OnInit, OnDestroy {
         setCurrentPageNumber({ pageNumber: this.currentPage })
       );
     } else {
-      this.router.navigate(['pokemons'], {
-        queryParams: { page: 1 },
-        queryParamsHandling: 'merge'
-      });
+      this.routingService.navigateWithParams({ page: 1 });
       this.store.dispatch(setCurrentPageNumber({ pageNumber: 1 }));
     }
   }
@@ -91,18 +89,12 @@ export class PokemonListComponent implements OnInit, OnDestroy {
 
   changePage(event: number): void {
     if (event <= 0 || event > this.totalPages) return;
-    this.router.navigate(['pokemons'], {
-      queryParams: { page: event },
-      queryParamsHandling: 'merge'
-    });
+    this.routingService.navigateWithParams({ page: event });
     this.store.dispatch(setCurrentPageNumber({ pageNumber: event }));
   }
 
   changePokemon(event: string): void {
-    this.router.navigate(['pokemons'], {
-      queryParams: { name: event },
-      queryParamsHandling: 'merge'
-    });
+    this.routingService.navigateWithParams({ name: event });
     this.store.dispatch(selectPokemon({ pokemonName: event }));
   }
   // KeyValuePipe preserve property sorting
