@@ -59,6 +59,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   searchTerm(term: string): Observable<string[]> {
+    term = term.toLowerCase();
     if (!term.trim()) {
       return of([]);
     }

@@ -55,7 +55,7 @@ export class PokedexDisplayComponent implements OnInit, OnDestroy {
 
   setCurrentPokemon(): void {
     const queryParams = new URLSearchParams(location.search);
-    let pokemonName = queryParams.get('name');
+    let pokemonName = queryParams.get('name').toLowerCase();
     if (!pokemonName) {
       pokemonName = 'bulbasaur';
       this.routingService.navigateWithParams({ name: pokemonName });
