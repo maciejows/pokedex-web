@@ -10,8 +10,8 @@ import { PokemonListComponent } from '@components/pokemon-list/pokemon-list.comp
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { CharToSpacePipe } from '@pipes/CharToSpacePipe';
-import { CountPagesPipe } from '@pipes/CountPagesPipe';
+import { DashToSpacePipe } from '@pipes/DashToSpace.pipe';
+import { CountPagesPipe } from '@pipes/CountPages.pipe';
 import { PageEffects } from '@store/page/page.effects';
 import { PokemonEffects } from '@store/pokemon/pokemon.effects';
 import { pageReducer } from '@store/page/page.reducer';
@@ -29,7 +29,7 @@ import { AppComponent } from './app.component';
     AppComponent,
     PokedexDisplayComponent,
     PokemonListComponent,
-    CharToSpacePipe,
+    DashToSpacePipe,
     CountPagesPipe,
     NavbarComponent,
     FilterComponent

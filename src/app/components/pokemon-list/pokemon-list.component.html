@@ -8,7 +8,7 @@
           *ngFor="let pokemon of currentPokemonPage | keyvalue: originalOrder"
           [class.selected-pokemon]="pokemon.key === selectedPokemon" [ngClass]="{'selected-pokemon text-white': pokemon.key === selectedPokemon,
            'text-dark': pokemon.key !== selectedPokemon}" (click)="changePokemon(pokemon.key)">
-          {{pokemon?.key | titlecase | space}}
+          {{pokemon?.key | DashToSpace | titlecase }}
         </a>
       </ul>
       <ng-template #loading>
